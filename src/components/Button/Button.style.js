@@ -40,5 +40,29 @@ export default{
             ...base_style.text,
             color:color.brown,
         }
+    }),
+    third:StyleSheet.create({
+        ...base_style,
+        container:{
+            ...base_style.container,
+            backgroundColor:color.green,
+            borderColor:color.green,
+        },
+        text:{
+            ...base_style.text,
+            color:color.white,
+        }
+    }),
+    fourth:StyleSheet.create({
+        ...base_style,
+        container:{
+            ...base_style.container,
+            backgroundColor:color.blue,
+            borderColor:color.blue,
+        },
+        text:{
+            ...base_style.text,
+            color:color.white,
+        }
     })
 }

@@ -1,24 +1,41 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 import Button from '../../components/Button';
 import styles from './FirstPage.style';
 
-function FirstPage(){
+
+function FirstPage({navigation}){
+  const goToLoginPage = () => {
+    navigation.navigate("LoginPage");
+  }
   return (
     <View style={styles.container}>
       
-      <View style={styles.logo_container}>
+      <View style={styles.header_container}>
+
+        <View style={styles.image_container}>
+          <Image
+            style={styles.image} 
+            source={require('../../assets/vetpati.png')} 
+            resizeMode='cover'
+          />
+        </View>
+
+        {/* <View style={styles.logo_container}>
+          <Text>abc</Text>
+        </View> */}
 
       </View>
       
       <View style={styles.button_container}>
-        <Button text="Merhaba" theme='secondary'/>
-        <Button text="Merhaba" theme='secondary'/>
-        <Button text="Merhaba" theme='secondary'/>
+        <Button text="Giriş Yap" theme='primary'onPress={goToLoginPage}/>
+        <Button text="Kayıt Ol" theme='third'/>
+        <Button text="Kayıt Ol (Klinik)" theme='fourth'/>
       </View>
 
-      <Text style={styles.copy_right}>Copyright KFAU © 2024 Tüm Hakları Saklıdır.</Text>
-
+      <View style={styles.copy_right_container}>
+        <Text style={styles.copy_right}>Copyright KFAU © 2024 Tüm Hakları Saklıdır.</Text>
+      </View>
     </View>
   )
 }
