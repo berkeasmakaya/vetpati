@@ -1,21 +1,28 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native'
 import React from 'react'
 import Input from '../../../components/Input';
 import styles from './LoginPage.style';
 import Button from '../../../components/Button';
 
 
-function FirstPage({navigation}){
+function LoginPage({navigation}){
   
+  const goToRegisterPage = () => {
+    navigation.navigate("RegisterPage")
+  }
+
   return (
-    <View style={styles.container}>
-      
+    <KeyboardAvoidingView  
+      behavior={Platform.OS === 'padding'} 
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.header_container}>
 
         <View style={styles.image_container}>
           <Image
             style={styles.image} 
-            source={require('../../../assets/vetpati.png')} 
+            source={require('../../../assets/vetpati-yeni.png')} 
             resizeMode='cover'
           />
         </View>
@@ -30,7 +37,10 @@ function FirstPage({navigation}){
         <Text style={styles.input_text}>Mail Adresi</Text>
         <Input placeholder="Lütfen Mailinizi Giriniz..."/>
         <Text style={styles.input_text}>Şifre</Text>
-        <Input placeholder="Lütfen Şifrenizi Giriniz..."/>
+        <Input 
+          placeholder="Lütfen Şifrenizi Giriniz..."
+          isSecure={true}
+        />
         <TouchableOpacity>
           <Text style={styles.forgot_password}>Şifremi Unuttum</Text>
         </TouchableOpacity>
@@ -39,16 +49,16 @@ function FirstPage({navigation}){
       <View style={styles.button_container}>
         <Button text="Giriş Yap" theme='primary'/>
       </View>
-
+      </ScrollView>
       <View style={styles.bottom_container}>
         <Text style={styles.text}>Hesabın yok mu?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={goToRegisterPage}>
           <Text style={styles.text_2}> HESAP OLUŞTUR</Text>
         </TouchableOpacity>
       </View>
       
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
-export default FirstPage;
+export default LoginPage;

@@ -1,21 +1,26 @@
 import { StyleSheet, Dimensions } from "react-native";
 import color from "../../../styles/color"
 
-const deviceSize = Dimensions.get("window")
+const deviceSize = Dimensions.get("window");
+const headerHeight = deviceSize.height * 0.4;
+const bottomHeight = deviceSize.height * 0.05;
 
 export default StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:color.backgroundGray
     },
+    scrollContainer:{
+        flexGrow:1,
+    },
     header_container:{
-        flex:1,
+        height:headerHeight,
     },
     image_container:{
         flex:1,
         justifyContent:"center",
         alignItems:"center",
-        backgroundColor:"red"
+        //backgroundColor:"red"
     },
     image:{
         width:'100%',
@@ -45,10 +50,11 @@ export default StyleSheet.create({
         //backgroundColor:"green"
     },
     bottom_container:{
-        flex:0.3,
+        height:bottomHeight,
         flexDirection:"row",
         alignItems:"center",
-        justifyContent:"center"
+        justifyContent:"center",
+        //backgroundColor:"red"
     },
     text:{
         color:'#000000'
