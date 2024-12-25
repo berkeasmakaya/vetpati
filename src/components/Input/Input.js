@@ -1,10 +1,10 @@
 import React from "react";
-import { TextInput, View } from "react-native";
+import { SafeAreaView, TextInput, View } from "react-native";
 import styles from './Input.style';
 
 const Input = ({placeholder, value, onType, isSecure, onBlur}) => {
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <TextInput 
                 style={styles.input}
                 autoCapitalize="none"
@@ -14,7 +14,7 @@ const Input = ({placeholder, value, onType, isSecure, onBlur}) => {
                 onBlur={onBlur}
                 secureTextEntry={isSecure}
             />
-        </View>
+        </SafeAreaView>
         
     )
 }

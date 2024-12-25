@@ -23,7 +23,7 @@ function FirstPage({navigation}){
         <View style={styles.image_container}>
           <Image
             style={styles.image} 
-            source={require('../../assets/vetpati.png')} 
+            source={require('../../assets/vetpati.jpg')} 
             resizeMode='cover'
           />
         </View>

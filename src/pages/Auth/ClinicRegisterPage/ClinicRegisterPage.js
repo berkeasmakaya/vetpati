@@ -16,7 +16,7 @@ function ClinicRegisterPage({navigation}) {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding': "padding"} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.logo_container}>
           <Text>Logo</Text>

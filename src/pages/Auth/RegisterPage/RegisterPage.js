@@ -17,9 +17,7 @@ function RegisterPage({navigation}) {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'padding'}
-      style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding': "padding"} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={[styles.header_container]}>
           <View style={styles.image_container}>

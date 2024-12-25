@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 import color from "../../styles/color";
 
+
 const deviceSize = Dimensions.get("window")
 
 export default StyleSheet.create({
@@ -28,7 +29,7 @@ export default StyleSheet.create({
     button_container:{
         flex:1,
         justifyContent:"space-evenly",
-        backgroundColor:color.backgroundGray,
+        
     },
     copy_right_container:{
         flex:0.15,
