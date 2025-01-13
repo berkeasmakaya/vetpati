@@ -2,8 +2,8 @@ import { StyleSheet, Dimensions } from "react-native"
 import color from "../../../styles/color";
 
 const deviceSize = Dimensions.get("window");
-const headerHeight = deviceSize.height * 0.4; // Ekran yüksekliğinin %40'ı
-const bottomHeight = deviceSize.height * 0.05
+const headerHeight = deviceSize.height * 0.35; // Ekran yüksekliğinin %40'ı
+const bottomHeight = deviceSize.height * 0.07
 
 export default StyleSheet.create({
     container:{
@@ -15,8 +15,8 @@ export default StyleSheet.create({
     },
     header_container:{
         height: headerHeight,
-        backgroundColor:"yellow",
-        marginBottom:20,
+        //backgroundColor:"yellow",
+        
     },
     image_container:{
         flex:1,
@@ -51,6 +51,7 @@ export default StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         height: bottomHeight ,
+        //backgroundColor:"red",
     },
     text:{
         color:'#000000'

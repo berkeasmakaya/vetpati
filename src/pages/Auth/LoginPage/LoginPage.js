@@ -1,14 +1,26 @@
-import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import axios from 'axios';
 import styles from './LoginPage.style';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+const initialFormValues = {
+  usermail: '',
+  password: '',
+};
+
+const validationSchema = Yup.object().shape({
+  usermail: Yup.string()
+    .email("E-mail formatına uygun girilmeli!")
+    .required("E-mail alanı boş bırakılamaz!"),
+  password: Yup.string()
+    .required("Şifre boş bırakılamaz")
+    .min(6, "Şifre en az 6 karakter olmalı!"),
+});
 
 function LoginPage({ navigation }) {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
 
   const goToRegisterPage = () => {
     navigation.navigate('RegisterPage');
@@ -18,70 +30,64 @@ function LoginPage({ navigation }) {
     navigation.navigate("AppStack", "MainPage")
   }
 
-  // const handleLogin = async () => {
-  //   if (!email || !password) {
-  //     Alert.alert('Error', 'Please enter both email and password.');
-  //     return;
-  //   }
-
-    // setIsLoading(true);
-
-  //   try {
-  //     const response = await axios.post('http://localhost:3000/login', { email, sifre: password });
-
-  //     if (response.status === 200) {
-  //       Alert.alert('Success', response.data.message);
-  //       // Navigate to the next screen (e.g., dashboard, home, etc.)
-  //     }
-  //   } catch (error) {
-  //     if (error.response) {
-  //       Alert.alert('Login Failed', error.response.data.error || 'An error occurred.');
-  //     } else {
-  //       Alert.alert('Error', 'Unable to connect to the server.');
-  //     }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding': "padding"} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.header_container}>
-          <View style={styles.image_container}>
-            <Image style={styles.image} source={require('../../../assets/vetpati-yeni.png')} resizeMode='cover' />
-          </View>
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <Formik
+        initialValues={initialFormValues}
+        validationSchema={validationSchema}>
+        {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+          <>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              <View style={styles.header_container}>
+                <View style={styles.image_container}>
+                  <Image style={styles.image} source={require('../../../assets/vetpati.jpg')} resizeMode='cover' />
+                </View>
+              </View>
 
-        <View style={styles.input_container}>
-          <Text style={styles.input_text}>Mail Adresi</Text>
-          <Input
-            placeholder="Lütfen Mailinizi Giriniz..."
-            // value={email}
-            // onType={setEmail}
-          />
-          <Text style={styles.input_text}>Şifre</Text>
-          <Input
-            placeholder="Lütfen Şifrenizi Giriniz..."
-            // value={password}
-            // onType={setPassword}
-            isSecure={true}
-          />
-          <TouchableOpacity>
-            <Text style={styles.forgot_password}>Şifremi Unuttum</Text>
-          </TouchableOpacity>
-        </View>
+              <View style={styles.input_container}>
+                <Text style={styles.input_text}>Mail Adresi</Text>
+                <Input
+                  value={values}
+                  placeholder="Lütfen Mailinizi Giriniz..."
+                  onType={handleChange('usermail')}
+                  onBlur={handleBlur('usermail')}
+                  autoCapitalize="none"
+                />
+                {touched.usermail && errors.usermail && (
+                  <Text style={styles.error}>{errors.usermail}</Text>
+                )}
+                <Text style={styles.input_text}>Şifre</Text>
+                <Input
+                  value={values}
+                  placeholder="Lütfen Şifrenizi Giriniz..."
+                  onType={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  isSecure={true}
+                  autoCapitalize="none"
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.error}>{errors.password}</Text>
+                )}
+                <TouchableOpacity>
+                  <Text style={styles.forgot_password}>Şifremi Unuttum</Text>
+                </TouchableOpacity>
+              </View>
 
-        <View style={styles.button_container}>
-          <Button text={'Giriş Yap'} theme='primary' onPress={goToMainPage}/>
-        </View>
-      </ScrollView>
-      <View style={styles.bottom_container}>
-        <Text style={styles.text}>Hesabın yok mu?</Text>
-        <TouchableOpacity onPress={goToRegisterPage}>
-          <Text style={styles.text_2}> HESAP OLUŞTUR</Text>
-        </TouchableOpacity>
-      </View>
+              <Button text={'Giriş Yap'} theme='primary' onPress={goToMainPage} />
+              <View style={styles.bottom_container}>
+                <Text style={styles.text}>Hesabın yok mu?</Text>
+                <TouchableOpacity onPress={goToRegisterPage}>
+                  <Text style={styles.text_2}> HESAP OLUŞTUR</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </>
+        )}
+      </Formik>
     </KeyboardAvoidingView>
   );
 }

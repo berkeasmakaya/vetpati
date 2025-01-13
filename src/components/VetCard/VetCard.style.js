@@ -32,5 +32,10 @@ export default StyleSheet.create({
     },
     animal_container:{
 
+    },
+    logo:{
+        marginHorizontal:5,
+        width:50,
+        height:50
     }
 })

@@ -2,19 +2,20 @@ import { StyleSheet, Dimensions } from "react-native";
 import color from "../../../styles/color"
 
 const deviceSize = Dimensions.get("window");
-const headerHeight = deviceSize.height * 0.4;
-const bottomHeight = deviceSize.height * 0.05;
+const headerHeight = deviceSize.height * 0.35;
+const bottomHeight = deviceSize.height * 0.07;
 
 export default StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:color.backgroundGray
+        backgroundColor:color.backgroundGray,
     },
     scrollContainer:{
         flexGrow:1,
     },
     header_container:{
         height:headerHeight,
+        backgroundColor:"red"
     },
     image_container:{
         flex:1,
@@ -40,6 +41,12 @@ export default StyleSheet.create({
         textAlign:"left",
         marginLeft:30,
     },
+    error:{
+        color:"#000000",
+        fontWeight:"bold",
+        fontSize:15,
+        textAlign:"center"
+    },
     forgot_password:{
         color:color.brown,
         textAlign:"right",
@@ -54,7 +61,7 @@ export default StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"center",
-        //backgroundColor:"red"
+        //backgroundColor:"red",
     },
     text:{
         color:'#000000'

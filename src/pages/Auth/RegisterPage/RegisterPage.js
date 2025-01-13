@@ -17,13 +17,17 @@ function RegisterPage({navigation}) {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding': "padding"} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? "padding" : null}
+          style={styles.container}
+          
+        >
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <View style={[styles.header_container]}>
           <View style={styles.image_container}>
             <Image
               style={styles.image}
-              source={require('../../../assets/vetpati-yeni.png')}
+              source={require('../../../assets/vetpati.jpg')}
               resizeMode="cover"
             />
           </View>
@@ -44,16 +48,16 @@ function RegisterPage({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.button_container}>
-          <Button text="Kayıt Ol" theme="secondary" />
-        </View>
-      </ScrollView>
-      <View style={styles.bottom_container}>
+        <Button text="Kayıt Ol" theme="secondary" />
+        
+        <View style={styles.bottom_container}>
         <Text style={styles.text}>Hesabın Var Mı?</Text>
         <TouchableOpacity onPress={goToLoginPage}>
           <Text style={styles.text_2}> Giriş Yap</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
+      
     </KeyboardAvoidingView>
   );
 }
