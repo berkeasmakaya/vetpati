@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
     .email("E-mail formatına uygun girilmeli!")
     .required("E-mail alanı boş bırakılamaz!"),
   password: Yup.string()
-    .required("Şifre boş bırakılamaz")
+    .required("Şifre boş bırakılamaz!")
     .min(6, "Şifre en az 6 karakter olmalı!"),
 });
 
@@ -42,37 +42,44 @@ function LoginPage({ navigation }) {
         {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
           <>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-              <View style={styles.header_container}>
-                <View style={styles.image_container}>
-                  <Image style={styles.image} source={require('../../../assets/vetpati.jpg')} resizeMode='cover' />
-                </View>
+              <View style={styles.logo_container}>
+                <Image
+                  style={styles.logo}
+                  source={require('../../../assets/main_Logo.png')}
+                  resizeMode='contain'
+                />
               </View>
 
               <View style={styles.input_container}>
-                <Text style={styles.input_text}>Mail Adresi</Text>
-                <Input
-                  value={values}
-                  placeholder="Lütfen Mailinizi Giriniz..."
-                  onType={handleChange('usermail')}
-                  onBlur={handleBlur('usermail')}
-                  autoCapitalize="none"
-                />
-                {touched.usermail && errors.usermail && (
-                  <Text style={styles.error}>{errors.usermail}</Text>
-                )}
-                <Text style={styles.input_text}>Şifre</Text>
-                <Input
-                  value={values}
-                  placeholder="Lütfen Şifrenizi Giriniz..."
-                  onType={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  isSecure={true}
-                  autoCapitalize="none"
-                />
-                {touched.password && errors.password && (
-                  <Text style={styles.error}>{errors.password}</Text>
-                )}
-                <TouchableOpacity>
+                <View style={styles.mail_input}>
+                  <Text style={styles.input_text}>Mail Adresi</Text>
+                  <Input
+                    value={values.usermail}
+                    placeholder="Lütfen Mailinizi Giriniz..."
+                    onType={handleChange('usermail')}
+                    onBlur={handleBlur('usermail')}
+                    autoCapitalize="none"
+                  />
+                  {touched.usermail && errors.usermail && (
+                    <Text style={styles.error}>{errors.usermail}</Text>
+                  )}
+                </View>
+                <View style={styles.password_input}>
+                  <Text style={styles.input_text}>Şifre</Text>
+                  <Input
+                    value={values.password}
+                    placeholder="Lütfen Şifrenizi Giriniz..."
+                    onType={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    isSecure={true}
+                    autoCapitalize="none"
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={styles.error}>{errors.password}</Text>
+                  )}
+                </View>
+
+                <TouchableOpacity style={styles.forgot_password_container}>
                   <Text style={styles.forgot_password}>Şifremi Unuttum</Text>
                 </TouchableOpacity>
               </View>

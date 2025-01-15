@@ -2,8 +2,8 @@ import { StyleSheet, Dimensions } from "react-native"
 import color from "../../../styles/color";
 
 const deviceSize = Dimensions.get("window");
-const headerHeight = deviceSize.height * 0.35; // Ekran yüksekliğinin %40'ı
-const bottomHeight = deviceSize.height * 0.07
+const headerHeight = deviceSize.height * 0.35; 
+const bottomHeight = deviceSize.height * 0.09;
 
 export default StyleSheet.create({
     container:{
@@ -13,38 +13,47 @@ export default StyleSheet.create({
     scrollContainer: {
       flexGrow: 1, 
     },
-    header_container:{
-        height: headerHeight,
-        //backgroundColor:"yellow",
-        
-    },
-    image_container:{
-        flex:1,
+    logo_container:{
+        height:headerHeight,
         justifyContent:"center",
         alignItems:"center",
         //backgroundColor:"red"
     },
-    image:{
-        width:'100%',
-        height:'100%'
+    logo:{
+        width:'50%',
+        height:'50%'
     },
     input_container:{
         flex:1,
         justifyContent:"center",
     },
-   input_text:{
+    mail_input:{
+        marginVertical:10,
+    },
+    password_input:{
+        marginVertical:10,
+    },
+    respassword_input:{
+        marginVertical:10,
+    },
+    input_text:{
         color:color.brown,
-        textAlign:"left",
-        marginLeft: '7.5%',
+        marginLeft: '5%',
+    },
+    error:{
+        color:"#000000",
+        fontWeight:"bold",
+        fontSize:15,
+        textAlign:"center"
+    },
+    forgot_password_container:{
+        marginTop:20,
     },
     forgot_password:{
         color:color.brown,
         textAlign:"right",
         marginRight:'7.5%',
         fontWeight:"bold"
-    },
-    button_container:{
-        //backgroundColor:"green"
     },
     bottom_container:{
         flexDirection:"row",

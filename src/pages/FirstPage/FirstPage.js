@@ -20,11 +20,11 @@ function FirstPage({navigation}){
       
       <View style={styles.header_container}>
 
-        <View style={styles.image_container}>
+        <View style={styles.logo_container}>
           <Image
-            style={styles.image} 
-            source={require('../../assets/vetpati.jpg')} 
-            resizeMode='cover'
+            style={styles.logo} 
+            source={require('../../assets/main_Logo.png')} 
+            resizeMode='contain'
           />
         </View>
 

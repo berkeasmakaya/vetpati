@@ -12,19 +12,15 @@ export default StyleSheet.create({
     header_container:{
         flex:1,
     },
-    image_container:{
-        flex:5,
+    logo_container:{
+        flex:3,
         justifyContent:"center",
         alignItems:"center",
         //backgroundColor:"red"
     },
-    image:{
-        width:'100%',
-        height:'100%'
-    },
-    logo_container:{
-        flex:1,
-        backgroundColor:"yellow",
+    logo:{
+        width:'50%',
+        height:'50%'
     },
     button_container:{
         flex:1,

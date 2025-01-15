@@ -3,7 +3,7 @@ import color from "../../../styles/color"
 
 const deviceSize = Dimensions.get("window");
 const headerHeight = deviceSize.height * 0.35;
-const bottomHeight = deviceSize.height * 0.07;
+const bottomHeight = deviceSize.height * 0.09;
 
 export default StyleSheet.create({
     container:{
@@ -13,33 +13,32 @@ export default StyleSheet.create({
     scrollContainer:{
         flexGrow:1,
     },
-    header_container:{
+    logo_container:{
         height:headerHeight,
-        backgroundColor:"red"
-    },
-    image_container:{
-        flex:1,
         justifyContent:"center",
         alignItems:"center",
         //backgroundColor:"red"
     },
-    image:{
-        width:'100%',
-        height:'100%'
-    },
-    logo_container:{
-        flex:0.25,
-        //backgroundColor:"yellow",
+    logo:{
+        width:'50%',
+        height:'50%'
     },
     input_container:{
         flex:1,
         justifyContent:"center",
         //backgroundColor:"blue",
     },
+    mail_input:{
+        //backgroundColor:"red",
+        marginVertical:10
+    },
+    password_input:{
+        //backgroundColor:"yellow",
+        marginVertical:10,
+    },
     input_text:{
         color:color.brown,
-        textAlign:"left",
-        marginLeft:30,
+        marginLeft:'5%',
     },
     error:{
         color:"#000000",
@@ -47,14 +46,14 @@ export default StyleSheet.create({
         fontSize:15,
         textAlign:"center"
     },
+    forgot_password_container:{
+        marginTop:20,
+    },
     forgot_password:{
         color:color.brown,
         textAlign:"right",
-        marginRight:30,
+        marginRight:"5%",
         fontWeight:"bold"
-    },
-    button_container:{
-        //backgroundColor:"green"
     },
     bottom_container:{
         height:bottomHeight,

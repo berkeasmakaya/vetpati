@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 import color from "../../../styles/color";
 
 const deviceSize = Dimensions.get("window");
-const bottom_height = deviceSize.height * 0.05;
+const bottom_height = deviceSize.height * 0.07;
 
 export default StyleSheet.create({
     container:{
@@ -11,7 +11,13 @@ export default StyleSheet.create({
     },
     logo_container:{
         flex:1.5,
+        justifyContent:"center",
+        alignItems:"center",
         //backgroundColor:"red"
+    },
+    logo:{
+        width:'50%',
+        height:'50%',
     },
     scrollContainer:{
         flexGrow:1,
@@ -24,10 +30,8 @@ export default StyleSheet.create({
     },
     input_text:{
         color:color.brown,
-        marginBottom:-10,
-        marginLeft:"7.5%",
+        marginLeft:"5%",
     },
-    button_container:{},
     bottom_container:{
         height:bottom_height,
         flexDirection:"row",

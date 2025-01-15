@@ -7,7 +7,7 @@ const base_style = StyleSheet.create({
         borderWidth:1,
         justifyContent:"center",
         alignItems:"center",
-        padding:10,
+        padding:15,
         margin:15,
     },
     text:{

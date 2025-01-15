@@ -4,7 +4,7 @@ import styles from './Input.style';
 
 const Input = ({placeholder, value, onType, isSecure, onBlur,autoCapitalize}) => {
     return(
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <TextInput 
                 style={styles.input}
                 autoCapitalize={autoCapitalize}
@@ -14,7 +14,7 @@ const Input = ({placeholder, value, onType, isSecure, onBlur,autoCapitalize}) =>
                 onBlur={onBlur}
                 secureTextEntry={isSecure}
             />
-        </SafeAreaView>
+        </View>
         
     )
 }
