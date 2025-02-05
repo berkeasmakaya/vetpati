@@ -27,11 +27,7 @@ function FirstPage({navigation}){
             resizeMode='contain'
           />
         </View>
-
-        {/* <View style={styles.logo_container}>
-          <Text>abc</Text>
-        </View> */}
-
+        
       </View>
       
       <View style={styles.button_container}>

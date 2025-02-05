@@ -1,17 +1,14 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { SafeAreaView,ScrollView } from "react-native";
 import VetCard from "../../components/VetCard";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./MainPage.style";
 
 function MainPage() {
     return(
-        <SafeAreaView>
+        <SafeAreaView style={styles.container} edges={['top']}>
             <ScrollView>
                 <VetCard />
-                <VetCard />
-                <VetCard />
             </ScrollView>
-            
         </SafeAreaView>
     )
 }

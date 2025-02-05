@@ -5,34 +5,50 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import RegisterPage from './pages/Auth/RegisterPage';
 import LoginPage from './pages/Auth/LoginPage';
 import FirstPage from './pages/FirstPage';
-import ClinicRegisterPage from "./pages/Auth/ClinicRegisterPage/";
+import ClinicRegisterPage from "./pages/Auth/ClinicRegisterPage";
 import MainPage from "./pages/MainPage/MainPage";
-
+import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons'
+import color from "./styles/color";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const AuthStack = () => {
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="FirstPage" component={FirstPage} options={{headerShown:false}}/>
+      <Stack.Screen name="RegisterPage" component={RegisterPage} options={{headerShown:false}}/>
+      <Stack.Screen name="LoginPage" component={LoginPage} options={{headerShown:false}}/>
+      <Stack.Screen name="ClinicRegisterPage" component={ClinicRegisterPage} options={{headerShown:false}}/>
+    </Stack.Navigator>
+  )
+}
+
+const AppStack = () => {
+  return(
+    <Tab.Navigator 
+      screenOptions={{
+        headerShown:false, 
+        tabBarShowLabel:false, 
+        tabBarStyle: {
+
+        }
+      }}
+    >
+      <Tab.Screen 
+        name="MainPage" 
+        component={MainPage}
+        options={{
+          tabBarIcon: () => (
+            <MaterialDesignIcons name="home" size={30} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  )
+}
+
 function App(){
-  
-  const AuthStack = () => {
-    return(
-      <Stack.Navigator>
-        <Stack.Screen name="FirstPage" component={FirstPage} options={{headerShown:false}}/>
-        <Stack.Screen name="RegisterPage" component={RegisterPage} options={{headerShown:false}}/>
-        <Stack.Screen name="LoginPage" component={LoginPage} options={{headerShown:false}}/>
-        <Stack.Screen name="ClinicRegisterPage" component={ClinicRegisterPage} options={{headerShown:false}}/>
-      </Stack.Navigator>
-    )
-  }
-
-  const AppStack = () => {
-    return(
-      <Tab.Navigator screenOptions={{headerShown:false}}>
-        <Tab.Screen name="MainPage" component={MainPage} />
-      </Tab.Navigator>
-    )
-  }
-
   return(
     <NavigationContainer>
       <Stack.Navigator>

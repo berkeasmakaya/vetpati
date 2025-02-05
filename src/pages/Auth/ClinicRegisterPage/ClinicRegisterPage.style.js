@@ -39,6 +39,12 @@ export default StyleSheet.create({
         justifyContent:"center",
         //backgroundColor:"blue"
     },
+    error:{
+        color:"#000000",
+        fontWeight:"bold",
+        fontSize:15,
+        textAlign:"center"
+    },
     text:{
         color:'#000000'
     },
