@@ -34,15 +34,24 @@ function LoginPage() {
 
   const handleLogin = async (values) => {
     try {
-      // Kullanıcıyı kontrol etme isteği
+      // Kullanıcıları çekme isteği
       const response = await fetch('http://10.0.2.2:5001/users');
       const data = await response.json();
-
-      // Kullanıcılar içinde e-posta ve şifreyi kontrol etme
-      const user = data.users.find(
+  
+      // API yanıtını kontrol et
+      console.log("API Yanıtı:", data);  // API yanıtını kontrol etmek için
+  
+      // Eğer data bir dizi ise, diziyi kontrol et
+      if (!Array.isArray(data)) {
+        alert('Kullanıcı verisi alınamadı.');
+        return;
+      }
+  
+      // Kullanıcıyı kontrol etme
+      const user = data.find(
         (user) => user.username === values.usermail && user.password === values.password
       );
-
+  
       if (user) {
         goToMainPage();  // Giriş başarılıysa ana sayfaya yönlendir
       } else {
@@ -53,6 +62,8 @@ function LoginPage() {
       alert('Giriş işlemi sırasında hata oluştu.');
     }
   };
+  
+  
 
   return (
     <KeyboardAvoidingView
