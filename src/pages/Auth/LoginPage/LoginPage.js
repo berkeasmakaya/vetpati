@@ -5,6 +5,7 @@ import Button from '../../../components/Button';
 import styles from './LoginPage.style';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native';  // Navigation hook'u
 
 const initialFormValues = {
   usermail: '',
@@ -20,16 +21,38 @@ const validationSchema = Yup.object().shape({
     .min(6, "Şifre en az 6 karakter olmalı!"),
 });
 
-function LoginPage({ navigation }) {
+function LoginPage() {
+  const navigation = useNavigation();  // useNavigation hook'u
 
   const goToRegisterPage = () => {
-    navigation.navigate('RegisterPage');
+    navigation.navigate('RegisterPage');  // Kayıt sayfasına yönlendirir
   };
 
   const goToMainPage = () => {
-    navigation.navigate("AppStack", "MainPage")
-  }
+    navigation.navigate("AppStack", "MainPage");  // Ana sayfaya yönlendirir
+  };
 
+  const handleLogin = async (values) => {
+    try {
+      // Kullanıcıyı kontrol etme isteği
+      const response = await fetch('http://10.0.2.2:5001/users');
+      const data = await response.json();
+
+      // Kullanıcılar içinde e-posta ve şifreyi kontrol etme
+      const user = data.users.find(
+        (user) => user.username === values.usermail && user.password === values.password
+      );
+
+      if (user) {
+        goToMainPage();  // Giriş başarılıysa ana sayfaya yönlendir
+      } else {
+        alert('E-mail veya şifre yanlış!');  // Kullanıcı bulunamazsa hata mesajı
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Giriş işlemi sırasında hata oluştu.');
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -38,8 +61,10 @@ function LoginPage({ navigation }) {
     >
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema}>
-        {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+        validationSchema={validationSchema}
+        onSubmit={(values) => handleLogin(values)}  // Handle submit işlemi
+      >
+        {({ values, handleChange, handleBlur, touched, errors, handleSubmit }) => (
           <>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
               <View style={styles.logo_container}>
@@ -84,7 +109,8 @@ function LoginPage({ navigation }) {
                 </TouchableOpacity>
               </View>
 
-              <Button text={'Giriş Yap'} theme='primary' onPress={goToMainPage} />
+              <Button text={'Giriş Yap'} theme='primary' onPress={handleSubmit} />  {/* onPress'e handleSubmit eklendi */}
+              
               <View style={styles.bottom_container}>
                 <Text style={styles.text}>Hesabın yok mu?</Text>
                 <TouchableOpacity onPress={goToRegisterPage}>

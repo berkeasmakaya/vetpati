@@ -7,7 +7,7 @@ import LoginPage from './pages/Auth/LoginPage';
 import FirstPage from './pages/FirstPage';
 import ClinicRegisterPage from "./pages/Auth/ClinicRegisterPage";
 import MainPage from "./pages/MainPage/MainPage";
-import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons'
+import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import color from "./styles/color";
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +21,7 @@ const AuthStack = () => {
       <Stack.Screen name="LoginPage" component={LoginPage} options={{headerShown:false}}/>
       <Stack.Screen name="ClinicRegisterPage" component={ClinicRegisterPage} options={{headerShown:false}}/>
     </Stack.Navigator>
-  )
+  );
 }
 
 const AppStack = () => {
@@ -30,9 +30,7 @@ const AppStack = () => {
       screenOptions={{
         headerShown:false, 
         tabBarShowLabel:false, 
-        tabBarStyle: {
-
-        }
+        tabBarStyle: { backgroundColor: color.primary }
       }}
     >
       <Tab.Screen 
@@ -45,18 +43,18 @@ const AppStack = () => {
         }}
       />
     </Tab.Navigator>
-  )
+  );
 }
 
-function App(){
+function App() {
   return(
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="AuthStack">
         <Stack.Screen name="AuthStack" component={AuthStack} options={{headerShown:false}}/>
         <Stack.Screen name="AppStack" component={AppStack} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 
 export default App;

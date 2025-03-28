@@ -11,7 +11,6 @@ export default StyleSheet.create({
         padding:10,
     },
     image_container:{
-        backgroundColor:"red",
         aspectRatio: 568/320,
     },
     image:{

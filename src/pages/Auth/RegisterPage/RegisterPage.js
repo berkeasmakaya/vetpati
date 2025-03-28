@@ -1,10 +1,11 @@
-import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import React from 'react';
 import Input from '../../../components/Input';
 import styles from './RegisterPage.style';
 import Button from '../../../components/Button';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native';  // Navigation hook'u
 
 const initialFormValues = {
   usermail: '',
@@ -24,13 +25,40 @@ const validationSchema = Yup.object().shape({
     .required('Şifre Onayı Zorunludur!'),
 });
 
-function RegisterPage({ navigation }) {
+function RegisterPage() {
+  const navigation = useNavigation();  // useNavigation hook'unu burada alıyoruz
+
   const goToLoginPage = () => {
-    navigation.navigate('LoginPage');
+    navigation.navigate('LoginPage');  // Giriş sayfasına yönlendirir
   };
+
   const goToMainPage = () => {
-    navigation.navigate("AppStack", "MainPage")
-  }
+    navigation.navigate("AppStack", "MainPage");  // Ana sayfaya yönlendirir
+  };
+
+  const handleRegister = async (values) => {
+    try {
+      const response = await fetch('http://10.0.2.2:5001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: values.usermail,
+          password: values.password
+        })
+      });
+
+      if (response.ok) {
+        goToMainPage();  // Başarılıysa main page'e yönlendirme yapar
+      } else {
+        alert('Kayıt sırasında hata oluştu.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('handleRegister post işlemi hatası');
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -38,7 +66,7 @@ function RegisterPage({ navigation }) {
       style={styles.container}
     >
       <Formik initialValues={initialFormValues} validationSchema={validationSchema}>
-        {({values, handleChange, handleBlur, handleSubmit, touched, errors}) => (
+        {({ values, handleChange, handleBlur, touched, errors }) => (
           <>
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
               <View style={styles.logo_container}>
@@ -50,14 +78,13 @@ function RegisterPage({ navigation }) {
               </View>
 
               <View style={styles.input_container}>
-
                 <View style={styles.mail_input}>
                   <Text style={styles.input_text}>Mail Adresi</Text>
-                  <Input 
+                  <Input
                     value={values.usermail}
                     onType={handleChange('usermail')}
                     onBlur={handleBlur('usermail')}
-                    placeholder="Lütfen Mailinizi Giriniz..." 
+                    placeholder="Lütfen Mailinizi Giriniz..."
                   />
                   {touched.usermail && errors.usermail && (
                     <Text style={styles.error}>{errors.usermail}</Text>
@@ -66,12 +93,12 @@ function RegisterPage({ navigation }) {
 
                 <View style={styles.password_input}>
                   <Text style={styles.input_text}>Şifre</Text>
-                  <Input 
+                  <Input
                     value={values.password}
                     onType={handleChange('password')}
-                    onBlur={handleBlur('passord')}
-                    placeholder="Lütfen Şifrenizi Giriniz..." 
-                    isSecure={true} 
+                    onBlur={handleBlur('password')}
+                    placeholder="Lütfen Şifrenizi Giriniz..."
+                    isSecure={true}
                   />
                   {touched.password && errors.password && (
                     <Text style={styles.error}>{errors.password}</Text>
@@ -97,10 +124,10 @@ function RegisterPage({ navigation }) {
                 </TouchableOpacity>
               </View>
 
-              <Button 
-                text="Kayıt Ol" 
+              <Button
+                text="Kayıt Ol"
                 theme="secondary"
-                onPress={goToMainPage}
+                onPress={() => handleRegister(values)}  // handleRegister çağrıldı
               />
 
               <View style={styles.bottom_container}>
@@ -109,7 +136,6 @@ function RegisterPage({ navigation }) {
                   <Text style={styles.text_2}> GİRİŞ YAP</Text>
                 </TouchableOpacity>
               </View>
-
             </ScrollView>
           </>
         )}
