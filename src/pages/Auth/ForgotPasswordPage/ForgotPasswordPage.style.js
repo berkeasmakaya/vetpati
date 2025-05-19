@@ -1,0 +1,55 @@
+import { StyleSheet } from "react-native";
+import color from "../../../styles/color";
+
+export default StyleSheet.create({
+    container:{
+        flex:1, 
+        backgroundColor:color.backgroundGray
+    },
+    image_container:{
+        //backgroundColor:"red", 
+        justifyContent:"center", 
+        alignItems:"center",
+        marginVertical:30
+    },
+    image:{
+        height:150, 
+        width:150
+    },
+    inner_container:{
+        backgroundColor:color.brown, 
+        //borderWidth:1, 
+        margin:30, 
+        borderRadius:10, 
+        padding:20
+    },
+    header:{
+        textAlign:"center", 
+        fontSize:25, 
+        fontWeight:"bold", 
+        color:color.white
+    },
+    input_main_container:{
+        //backgroundColor:"blue", 
+        padding:5,
+        marginTop:10
+    },
+    input_container:{
+        //backgroundColor:"red", 
+        marginVertical:10
+    },
+    input_text:{
+        marginLeft:"5%",
+        color:color.white,
+        fontWeight:"bold"
+    },
+    buton_container:{
+        marginTop:10
+    },
+    error:{
+        color:color.white,
+        fontWeight:"bold",
+        fontSize:15,
+        textAlign:"center"
+    }
+})

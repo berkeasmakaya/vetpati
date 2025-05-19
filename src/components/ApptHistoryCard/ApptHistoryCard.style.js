@@ -1,0 +1,67 @@
+import { StyleSheet } from "react-native";
+import color from "../../styles/color";
+
+export default StyleSheet.create({
+    container:{
+        flexDirection:"row",
+        margin:20,
+        padding:10,
+        borderRadius:10,
+        backgroundColor:color.white,
+        justifyContent:"space-between",shadowColor:"#000",
+        shadowOffset:{
+            width:5,
+            height:5
+        },
+        shadowOpacity:0.6,
+        shadowRadius:5,
+
+        elevation:12,
+    },
+    info_container:{
+       //backgroundColor:"yellow",
+       justifyContent:"space-around"
+    },
+    datetime_container:{
+        flexDirection:"row"
+    },
+    date:{
+        fontWeight:"bold",
+        fontSize:16
+    },
+    time:{
+        fontStyle:"italic",
+        fontSize:16
+    },  
+    clinic_name:{
+        fontSize:13,
+        marginBottom:3,
+    },
+    todo_list:{
+        marginBottom:10,
+    },
+    todo:{
+        //fontWeight:400,
+        fontWeight:"condensed"
+    },
+    buton:{
+        alignItems:"center",
+        borderRadius:5,
+        backgroundColor:color.blue,
+        paddingVertical:5,
+        paddingHorizontal:10,
+        alignSelf:"flex-start"
+    },
+    buton_text:{
+        color:color.white,
+        fontWeight:"bold"
+    },
+    animal_container:{
+        //backgroundColor:"red",
+        alignItems:"center",
+        justifyContent:"center"
+    },
+    image:{
+        marginBottom:5
+    }
+})
