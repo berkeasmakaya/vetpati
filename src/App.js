@@ -26,6 +26,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import UserFavoriteClinic from './pages/UserFavoriteClinicPage/UserFavoriteClinicPage';
 import UserGetApptPage from './pages/UserGetApptPage/UserGetApptPage';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 
 
 const Stack = createNativeStackNavigator();
@@ -124,13 +125,13 @@ const ClinicDrawer = () => {
     >
       <Drawer.Screen name='ClinicMainPage' component={ClinicMainPage} options={{
         drawerLabel:"Ana Sayfa",
-        drawerIcon:()=>(<Icon name='home' size={40} color={color.green}/>),
-        drawerLabelStyle:{fontSize:20, color:color.green}
+        drawerIcon:()=>(<Icon name='home' size={40} color={color.blue}/>),
+        drawerLabelStyle:{fontSize:20, color:color.blue}
       }}/>
       <Drawer.Screen name='ClinicEditPage' component={ClinicEditPage} options={{ 
         drawerLabel:"Profili Düzenle",
-        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.green}/>),
-        drawerLabelStyle:{fontSize:20, color:color.green}
+        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.blue}/>),
+        drawerLabelStyle:{fontSize:20, color:color.blue}
       }}/>
     </Drawer.Navigator>
   )
@@ -191,7 +192,14 @@ function App() {
   return (
     <GestureHandlerRootView>
       <Provider store={store}>
-        <MainApp />
+        <AlertNotificationRoot
+        colors={[{
+          card:color.blue
+        }]}
+        toastConfig={{titleStyle:{color:color.white}, textBodyStyle:{color:color.white}}}
+        >
+          <MainApp />
+        </AlertNotificationRoot>
       </Provider>
     </GestureHandlerRootView>
   )

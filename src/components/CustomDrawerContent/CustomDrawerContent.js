@@ -65,20 +65,20 @@ const CustomDrawerContent = (props) => {
                         <>
                             <View style={{ marginVertical: 10, }}>
                                 <TouchableOpacity onPress={handleEditUser} style={{ flexDirection: "row", alignItems: "center", marginLeft: 15 }}>
-                                    <Icon name="account-edit" size={40} color={color.green} />
-                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.green, fontSize: 20 }}>Profili Düzenle</Text>
+                                    <Icon name="account-edit" size={40} color={color.blue} />
+                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.blue, fontSize: 20 }}>Profili Düzenle</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ marginVertical: 10, }}>
                                 <TouchableOpacity onPress={handleAddPaw} style={{ flexDirection: "row", alignItems: "center", marginLeft: 15 }}>
-                                    <Icon name="paw" size={40} color={color.green} />
-                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.green, fontSize: 20 }}>Pati Ekle</Text>
+                                    <Icon name="paw" size={40} color={color.blue} />
+                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.blue, fontSize: 20 }}>Pati Ekle</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ marginVertical: 10, }}>
                                 <TouchableOpacity onPress={handleEditPaw} style={{ flexDirection: "row", alignItems: "center", marginLeft: 15 }}>
-                                    <Icon name="pencil-box" size={40} color={color.green} />
-                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.green, fontSize: 20 }}>Pati Düzenle</Text>
+                                    <Icon name="pencil-box" size={40} color={color.blue} />
+                                    <Text style={{ fontWeight: "600", marginLeft: 12, color: color.blue, fontSize: 20 }}>Pati Düzenle</Text>
                                 </TouchableOpacity>
                             </View>
                         </>
@@ -87,7 +87,7 @@ const CustomDrawerContent = (props) => {
                 </DrawerContentScrollView>
                 <View style={styles.logout_container}>
                     <TouchableOpacity style={styles.logout_inner_container} onPress={() => dispatch(openLogOutModal())}>
-                        <Icon name="logout" size={40} color={color.blue} />
+                        <Icon name="logout" size={40} color={color.brown} />
                         <Text style={styles.logout_text}>Çıkış Yap</Text>
                     </TouchableOpacity>
                 </View>

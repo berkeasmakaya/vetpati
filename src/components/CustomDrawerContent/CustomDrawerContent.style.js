@@ -28,10 +28,10 @@ export default StyleSheet.create({
     },
     vet_name:{
         textAlign:"center", 
-        marginVertical:10, 
+        marginVertical:20, 
         fontSize:20, 
         fontWeight:"bold", 
-        color:color.blue
+        color:color.brown
     },
     logout_container:{
         marginBottom:20
@@ -43,7 +43,7 @@ export default StyleSheet.create({
     },
     logout_text:{
         fontSize:20, 
-        color:color.blue, 
+        color:color.brown, 
         fontWeight:"bold"
     }
 })

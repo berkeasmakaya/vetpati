@@ -7,7 +7,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import color from '../../../styles/color';
-import {getAuth, createUserWithEmailAndPassword} from '@react-native-firebase/auth'
+import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth'
+import Loading from '../../../components/Loading/Loading';
+import { Toast, ALERT_TYPE } from "react-native-alert-notification";
 
 const initialFormValues = {
   usermail: '',
@@ -30,33 +32,44 @@ const validationSchema = Yup.object().shape({
 function RegisterPage({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
   const [showRepassword, setShowRepassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const goToLoginPage = () => {
     navigation.navigate('LoginPage');
   };
 
   const handleRegister = async (values) => {
+    setLoading(true)
     const auth = getAuth();
     try {
       await createUserWithEmailAndPassword(auth, values.usermail, values.password)
+      setLoading(false)
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "Başarılı",
+        textBody: "Giriş Başarılı",
+        autoClose: 500
+      })
       navigation.navigate("UserAppStack")
 
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        alert('Bu e-posta adresi zaten kullanımda.');
-      } else if (error.code === 'auth/invalid-email') {
-        alert('Geçersiz e-posta adresi.');
-      } else {
-        alert('Bir hata oluştu: ' + error.message);
-      }
+      setLoading(false)
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: "HATA",
+        textBody: error.code,
+        autoClose: 800
+      })
     }
   }
 
   return (
+
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      {loading && <Loading />}
       <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={handleRegister}>
         {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
           <>
