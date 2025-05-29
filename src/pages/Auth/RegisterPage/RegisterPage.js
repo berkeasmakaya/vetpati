@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Input from '../../../components/Input/Input';
 import styles from './RegisterPage.style';
 import Button from '../../../components/Button/Button';
@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import color from '../../../styles/color';
+import {getAuth, createUserWithEmailAndPassword} from '@react-native-firebase/auth'
 
 const initialFormValues = {
   usermail: '',
@@ -33,8 +34,22 @@ function RegisterPage({ navigation }) {
   const goToLoginPage = () => {
     navigation.navigate('LoginPage');
   };
-  const goToMainPage = () => {
-    navigation.navigate("UserAppStack", "MainPage")
+
+  const handleRegister = async (values) => {
+    const auth = getAuth();
+    try {
+      await createUserWithEmailAndPassword(auth, values.usermail, values.password)
+      navigation.navigate("UserAppStack")
+
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('Bu e-posta adresi zaten kullanımda.');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('Geçersiz e-posta adresi.');
+      } else {
+        alert('Bir hata oluştu: ' + error.message);
+      }
+    }
   }
 
   return (
@@ -42,7 +57,7 @@ function RegisterPage({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <Formik initialValues={initialFormValues} validationSchema={validationSchema}>
+      <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={handleRegister}>
         {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
           <>
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
@@ -71,8 +86,8 @@ function RegisterPage({ navigation }) {
 
                 <View style={styles.password_input}>
                   <Text style={styles.input_text}>Şifre</Text>
-                  <View style={{flexDirection:"row", alignItems:"center"}}>
-                    <View style={{flex:1}}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ flex: 1 }}>
                       <Input
                         value={values.password}
                         placeholder="Lütfen Şifrenizi Giriniz..."
@@ -82,8 +97,8 @@ function RegisterPage({ navigation }) {
                         autoCapitalize="none"
                       />
                     </View>
-                    <TouchableOpacity onPress={()=>setShowPassword(!showPassword)} style={{position:"absolute", right:20}}>
-                      <Icon name={showPassword ? "eye-off" : "eye"}size={30} color={color.brown}/>
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: 20 }}>
+                      <Icon name={showPassword ? "eye-off" : "eye"} size={30} color={color.brown} />
                     </TouchableOpacity>
                   </View>
                   {touched.password && errors.password && (
@@ -93,10 +108,10 @@ function RegisterPage({ navigation }) {
 
                 <View style={styles.password_input}>
                   <Text style={styles.input_text}>Şifre Onay</Text>
-                  <View style={{flexDirection:"row", alignItems:"center",}}>
-                    <View style={{flex:1}}>
+                  <View style={{ flexDirection: "row", alignItems: "center", }}>
+                    <View style={{ flex: 1 }}>
                       <Input
-                        value={values.password}
+                        value={values.repassword}
                         placeholder="Lütfen Şifrenizi Giriniz..."
                         onType={handleChange('repassword')}
                         onBlur={handleBlur('repassword')}
@@ -104,8 +119,8 @@ function RegisterPage({ navigation }) {
                         autoCapitalize="none"
                       />
                     </View>
-                    <TouchableOpacity onPress={()=>setShowRepassword(!showRepassword)} style={{position:"absolute", right:20}}>
-                      <Icon name={showRepassword ? "eye-off" : "eye"}size={30} color={color.brown}/>
+                    <TouchableOpacity onPress={() => setShowRepassword(!showRepassword)} style={{ position: "absolute", right: 20 }}>
+                      <Icon name={showRepassword ? "eye-off" : "eye"} size={30} color={color.brown} />
                     </TouchableOpacity>
                   </View>
                   {touched.repassword && errors.repassword && (
@@ -113,11 +128,11 @@ function RegisterPage({ navigation }) {
                   )}
                 </View>
               </View>
-              
+
               <View style={styles.btn_container}>
-                <Button text="Kayıt Ol" theme="secondary" onPress={goToMainPage}/>
-              </View>    
-              
+                <Button text="Kayıt Ol" theme="secondary" onPress={handleSubmit} />
+              </View>
+
 
               <View style={styles.bottom_container}>
                 <Text style={styles.text}>Hesabın Var Mı?</Text>

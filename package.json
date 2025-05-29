@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^22.2.0",
+    "@react-native-firebase/auth": "^22.2.0",
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/drawer": "^7.3.12",
@@ -19,6 +21,7 @@
     "formik": "^2.4.6",
     "react": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-alert-notification": "^0.4.2",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-image-picker": "^8.2.1",
     "react-native-modal": "^14.0.0-rc.1",

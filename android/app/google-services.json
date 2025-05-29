@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883000020781",
+    "project_id": "vetpati-63818",
+    "storage_bucket": "vetpati-63818.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883000020781:android:fd939778bdc433ea944da4",
+        "android_client_info": {
+          "package_name": "com.vetpati"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBDL_a0_TpHJUdPpitixzLc1E6Et7_kq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
