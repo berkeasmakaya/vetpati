@@ -64,5 +64,17 @@ export default{
             ...base_style.text,
             color:color.white,
         }
+    }),
+    fifth:StyleSheet.create({
+        ...base_style,
+        container:{
+            ...base_style.container,
+            backgroundColor:color.orange,
+            borderColor:color.orange,
+        },
+        text:{
+            ...base_style.text,
+            color:color.white,
+        }
     })
 }
