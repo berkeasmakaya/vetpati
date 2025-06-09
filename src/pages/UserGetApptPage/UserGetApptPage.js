@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, Text, View, Image, TouchableOpacity, Dimensions, TextInput, ScrollView, FlatList, Modal, Platform } from "react-native";
+import { SafeAreaView, Text, View, Image, TouchableOpacity, Dimensions, TextInput, ScrollView, FlatList, Platform } from "react-native";
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import styles from './UserGetApptPage.style'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -9,7 +9,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from "../../components/Button/Button";
-const {width} = Dimensions.get('window')
+import Modal from "react-native-modal";
+const { width } = Dimensions.get('window')
 
 
 const initialFormValues = {
@@ -44,6 +45,10 @@ function UserGetApptPage({ navigation }) {
     const year = date.getFullYear();
     return `${day} ${month} ${year}`;
   };
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible)
+  }
 
   const handleDateChange = (event, date) => {
     if (event.type === 'set' && date) {
@@ -59,16 +64,40 @@ function UserGetApptPage({ navigation }) {
     setShowDatePicker(false);
   };
 
-
+  const handleGoBack = () => {
+    navigation.goBack();
+  }
 
   const handleTimeChange = (event, time) => {
     setShowTimePicker(false);
     if (time) setSelectedTime(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
   };
+ const pawData = [
+  {image:require('../../assets/icon_dog.png'), name:'Badem', kind:'Husky', age:'2 Yıl 8 Ay'},
+  {image:require('../../assets/icon_cat.png'), name:'Mırnav', kind:'Ankara', age:'1 Yıl 4 Ay'}
+ ];
+  const renderPaws = ({item})=>{
+
+    return(
+      <TouchableOpacity style={styles.select_paw_card} >
+      <Image
+        source={item.image}
+        resizeMode="contain"
+        style={{ width: width / 6, height: width / 6 }}
+      />
+      <View style={{ justifyContent: 'center', margin: 5, }} >
+      <Text style={{ fontWeight: 'bold', fontSize: width / 20, color: color.brown }} >{item.name}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: width / 20 }} >{item.kind} - {item.age}</Text>
+
+    </View>
+    </TouchableOpacity>
+    );
+  }
 
   return (
 
     <View style={styles.container}>
+
       <View style={styles.img_container}>
 
         <Image
@@ -78,6 +107,9 @@ function UserGetApptPage({ navigation }) {
         />
 
       </View>
+      <TouchableOpacity style={styles.back_btn} onPress={handleGoBack}>
+        <Icon name="arrow-left" color={color.white} size={30} />
+      </TouchableOpacity>
       {/* <View style={{backgroundColor:"orange"}}><Text></Text></View> */}
 
       <Formik initialValues={initialFormValues}
@@ -125,56 +157,62 @@ function UserGetApptPage({ navigation }) {
                 </View>
 
                 {/* iOS: Tarih Seç Modal */}
-                {Platform.OS === 'ios' && showDateModal && (
-                  <Modal transparent animationType="slide">
-                    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                      <View style={{ backgroundColor: '#fff', margin: 20, borderRadius: 10, padding: 20 }}>
-                        <DateTimePicker
-                          value={tempDate}
-                          mode="date"
-                          display="spinner"
-                          onChange={(e, d) => d && setTempDate(d)}
-                        />
-                        <TouchableOpacity
-                          style={{ backgroundColor: color.orange, marginTop: 10, padding: 10, borderRadius: 5, alignItems: 'center' }}
-                          onPress={() => {
-                            setSelectedDate(formatDate(tempDate));
-                            setShowDateModal(false);
-                          }}
-                        >
-                          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Tarihi Seç</Text>
-                        </TouchableOpacity>
-                      </View>
+                {Platform.OS === 'ios' && (
+                  <Modal
+                    isVisible={showDateModal}
+                    onBackdropPress={() => setShowDateModal(false)}
+                  >
+
+                    <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
+                      <DateTimePicker
+                        value={tempDate}
+                        mode="date"
+                        display="spinner"
+                        onChange={(e, d) => d && setTempDate(d)}
+                      />
+                      <TouchableOpacity
+                        style={{ backgroundColor: color.orange, marginTop: 10, padding: 10, borderRadius: 5, alignItems: 'center' }}
+                        onPress={() => {
+                          setSelectedDate(formatDate(tempDate));
+                          setShowDateModal(false);
+                        }}
+                      >
+                        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Tarihi Seç</Text>
+                      </TouchableOpacity>
                     </View>
                   </Modal>
                 )}
+
 
 
 
                 {/* iOS: Saat Seç Modal */}
-                {Platform.OS === 'ios' && showTimeModal && (
-                  <Modal transparent animationType="slide">
-                    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                      <View style={{ backgroundColor: '#fff', margin: 20, borderRadius: 10, padding: 20 }}>
-                        <DateTimePicker
-                          value={tempDate}
-                          mode="time"
-                          display="spinner"
-                          onChange={(e, d) => d && setTempDate(d)}
-                        />
-                        <TouchableOpacity
-                          style={{ backgroundColor: color.orange, marginTop: 10, padding: 10, borderRadius: 5, alignItems: 'center' }}
-                          onPress={() => {
-                            setSelectedTime(tempDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-                            setShowTimeModal(false);
-                          }}
-                        >
-                          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Saati Seç</Text>
-                        </TouchableOpacity>
-                      </View>
+                {Platform.OS === 'ios' && (
+                  <Modal
+                    isVisible={showTimeModal}
+                    onBackdropPress={() => setShowTimeModal(false)}
+                  >
+
+                    <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
+                      <DateTimePicker
+                        value={tempDate}
+                        mode="time"
+                        display="spinner"
+                        onChange={(e, d) => d && setTempDate(d)}
+                      />
+                      <TouchableOpacity
+                        style={{ backgroundColor: color.orange, marginTop: 10, padding: 10, borderRadius: 5, alignItems: 'center' }}
+                        onPress={() => {
+                          setSelectedTime(tempDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                          setShowTimeModal(false);
+                        }}
+                      >
+                        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Saati Seç</Text>
+                      </TouchableOpacity>
                     </View>
                   </Modal>
                 )}
+
 
                 {/* Android: Saat doğrudan açılır */}
                 {Platform.OS === 'android' && showTimeModal && (
@@ -194,7 +232,7 @@ function UserGetApptPage({ navigation }) {
 
 
 
-              
+
 
                 {/* Date Picker */}
                 {showDatePicker && (
@@ -239,24 +277,42 @@ function UserGetApptPage({ navigation }) {
           </>
         )}
       </Formik>
-<TouchableOpacity style={styles.add_pati_button} >
-<Text style={{color: '#fff', fontWeight: 'bold'}} >Pati Seç</Text>
-</TouchableOpacity>
-<View style={styles.check_card} >
-<Image
-            source={require('../../assets/icon_dog.png')}
-            resizeMode="contain"
-            style={{width:width/6, height:width/6}}
-          />
-          <View style={{ justifyContent:'center', margin:5, }} >
-<Text style={{fontWeight:'bold',fontSize:width/20}} >{selectedDate ?? '-'} - {selectedTime ?? '-'}</Text>
-<Text style={{fontWeight:'bold',  fontSize:width/20, color:color.brown}} >Badem</Text>
+      <TouchableOpacity onPress={toggleModal} style={styles.add_pati_button} >
+        <Text style={{ color: '#fff', fontWeight: 'bold' }} >Pati Seç</Text>
+      </TouchableOpacity>
+      <Modal onBackdropPress={() => setIsModalVisible(false)} isVisible={isModalVisible} animationIn="zoomIn" animationOut="zoomOut">
+        <View style={{ backgroundColor: "#d3d3d3", flex: 0.5, borderRadius: 10, justifyContent: 'space-evenly' }}>
 
-</View>
-</View>
-<View style={{padding:20}} >
-<Button theme="fifth" text={'RANDEVU İSTEĞİ GÖNDER'} />
-</View>
+
+          <View style={{ alignItems: 'center', margin: 20, }} >
+
+            <Text style={{ fontSize: width / 15, fontWeight: 'bold', marginRight: 20 }} >Patini Seç</Text>
+                  <FlatList
+                  data={pawData}
+                  keyExtractor={(item,index)=>index.toString()}
+                  renderItem={renderPaws}
+                  />
+
+
+          </View>
+
+        </View>
+      </Modal>
+      <View style={styles.check_card} >
+        <Image
+          source={require('../../assets/icon_dog.png')}
+          resizeMode="contain"
+          style={{ width: width / 6, height: width / 6 }}
+        />
+        <View style={{ justifyContent: 'center', margin: 5, }} >
+          <Text style={{ fontWeight: 'bold', fontSize: width / 20 }} >{selectedDate ?? '-'} - {selectedTime ?? '-'}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: width / 20, color: color.brown }} >Badem</Text>
+
+        </View>
+      </View>
+      <View style={{ padding: 20 }} >
+        <Button theme="fifth" text={'RANDEVU İSTEĞİ GÖNDER'} />
+      </View>
     </View>
   )
 }

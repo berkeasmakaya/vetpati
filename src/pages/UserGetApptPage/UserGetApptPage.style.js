@@ -71,5 +71,51 @@ export default StyleSheet.create({
         alignItems:'center',
         justifyContent:'center'
         
-    }
+    },
+    select_paw_card:{
+        backgroundColor:'#fff',
+        borderRadius:10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 5, // Android gölge için
+        alignSelf:'center',
+        margin:5,
+        flexDirection:'row',
+        padding:10,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    close_btn:{
+        width:40,
+        height:40,
+        backgroundColor:color.blue,
+        justifyContent:"center",
+        alignItems:"center",
+        position: "absolute",
+        borderRadius: 100,
+        right:-12,
+        top:-14,
+    },
+    back_btn:{
+        backgroundColor: color.blue, 
+        justifyContent: "center", 
+        alignItems: "center", 
+        height: 40, 
+        width: 40, 
+        borderRadius: 50, 
+        position: "absolute", 
+        left:20,
+        ...Platform.select({
+            ios: {
+              top: 50,
+              
+            },
+            android: {
+              top: 20,
+            },
+           
+          }),
+    },
 })
