@@ -1,7 +1,8 @@
 import React from "react";
 import LottieView from "lottie-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import styles from './Loading.style'
+import color from "../../styles/color";
 
 const Loading = () => {
     return(
@@ -12,6 +13,7 @@ const Loading = () => {
                 loop
                 style={styles.lottie}
             />
+            <Text style={{textAlign:"center", color:color.brown, fontWeight:"bold", fontSize:25, fontStyle:"italic"}}>YÜKLENİYOR...</Text>
         </View>
     )
 }

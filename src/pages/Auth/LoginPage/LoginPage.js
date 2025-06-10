@@ -10,6 +10,10 @@ import color from '../../../styles/color';
 import { getAuth, signInWithEmailAndPassword } from '@react-native-firebase/auth';
 import { Toast, ALERT_TYPE } from "react-native-alert-notification";
 import Loading from '../../../components/Loading/Loading';
+import { getUserData } from '../../../services/userApi';
+import { useDispatch } from 'react-redux';
+import { setAddress, setFirstName, setLastName, setPhoneNumber } from '../../../redux/userSlice';
+import { getUserType } from '../../../services/authApi';
 
 
 const initialFormValues = {
@@ -27,6 +31,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginPage({ navigation }) {
+  const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -38,15 +43,37 @@ function LoginPage({ navigation }) {
     setLoading(true)
     const auth = getAuth();
     try {
-      await signInWithEmailAndPassword(auth, values.usermail, values.password)
-      setLoading(false)
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "Başarılı",
-        textBody: "Giriş Başarılı",
-        autoClose: 500
-      })
-      navigation.navigate("UserAppStack")
+      const userCredentail = await signInWithEmailAndPassword(auth, values.usermail, values.password)
+      const uid = userCredentail.user.uid;
+      const response = await getUserType(uid)
+      const { userType, data } = response;
+
+      if (userType === "user") {
+        dispatch(setFirstName(data.firstName));
+        dispatch(setLastName(data.lastName));
+        dispatch(setPhoneNumber(data.phoneNumber));
+        dispatch(setAddress(data.address));
+
+        navigation.navigate("UserAppStack");
+
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Başarılı",
+          textBody: "Giriş başarılı",
+          autoClose: 500,
+        });
+
+      } else if (userType === "vet") {
+        navigation.navigate("ClinicAppStack");
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Başarılı",
+          textBody: "Giriş başarılı",
+          autoClose: 500,
+        });
+      }
+      setLoading(false);
+
     } catch (error) {
       setLoading(false)
       Toast.show({
@@ -61,13 +88,13 @@ function LoginPage({ navigation }) {
   const goToForgotPasswordPage = () => {
     navigation.navigate("ForgotPasswordPage")
   }
-  
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      {loading && <Loading/>}
+      {loading && <Loading />}
       <Formik
         initialValues={initialFormValues}
         validationSchema={validationSchema}
@@ -141,3 +168,29 @@ function LoginPage({ navigation }) {
   );
 }
 export default LoginPage;
+
+// try {
+//   const userData = await getUserData(uid);
+
+//   dispatch(setFirstName(userData.firstName))
+//   dispatch(setLastName(userData.lastName))
+//   dispatch(setPhoneNumber(userData.phoneNumber))
+//   dispatch(setAddress(userData.address))
+
+//   setLoading(false)
+//   Toast.show({
+//     type: ALERT_TYPE.SUCCESS,
+//     title: "Başarılı",
+//     textBody: "Giriş Başarılı",
+//     autoClose: 500
+//   })
+//   navigation.navigate("UserAppStack")
+// } catch (error) {
+//   setLoading(false)
+//   Toast.show({
+//     type: ALERT_TYPE.DANGER,
+//     title: "HATA",
+//     textBody: "Bir Şeyler Ters Gitti.",
+//     autoClose: 800
+//   })
+// }

@@ -31,7 +31,7 @@ export default StyleSheet.create({
         marginVertical:20, 
         fontSize:20, 
         fontWeight:"bold", 
-        color:color.brown
+        color:color.blue
     },
     logout_container:{
         marginBottom:20

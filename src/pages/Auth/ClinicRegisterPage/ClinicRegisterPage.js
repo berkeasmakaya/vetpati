@@ -11,26 +11,36 @@ import color from "../../../styles/color";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import CustomModal from "../../../components/modals/CustomModal/CustomModal";
-
+import Button from "../../../components/Button/Button";
+import { getAuth } from "@react-native-firebase/auth";
+import { createVet } from "../../../services/vetApi";
 
 const initialFormValues = {
+  firstName: "",
+  lastName: "",
   usermail: '',
-  clinic_name: '',
-  clinic_address: '',
-  phone_num: '',
+  clinicName: '',
+  clinicAddress: '',
+  phoneNum: '',
   password: '',
   repassword: '',
 }
 
 const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required("İsim alanı boş bırakılamaz!")
+    .min(3, "İsim en az 3 harfli olmalı!"),
+  lastName: Yup.string()
+    .required("Soyisim alanı boş bırakılamaz!")
+    .min(3, "Soyisim en az 3 harfli olmalı!"),
   usermail: Yup.string()
     .email("E-mail formatına uygun girilmeli!")
     .required("E-mail alanı boş bırakılamaz!"),
-  clinic_name: Yup.string()
+  clinicName: Yup.string()
     .required("Klinik adı boş olamaz!"),
-  clinic_address: Yup.string()
+  clinicAddress: Yup.string()
     .required("Klinik adresi boş olamaz!"),
-  phone_num: Yup.number()
+  phoneNum: Yup.number()
     .required("Telefon numarası boş olamaz!"),
   password: Yup.string()
     .required("Şifre boş bırakılamaz!")
@@ -39,13 +49,17 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password')], 'Şifreler Aynı Olmalıdır!')
     .required('Şifre Onayı Zorunludur!'),
 })
-const totalPages = 4;
+
+const totalPages = 5;
 
 function ClinicRegisterPage({ navigation }) {
+  const [loading, setLoading] = useState(false)
   const [animalList, setAnimalList] = useState(["dog", "cat", "bird", "rabbit"]);
   const [selectedAnimals, setSelectedAnimals] = useState([])
   const [clinicImage, setClinicImage] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const pagerRef = useRef(null)
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleOpenCamera = () => {
     launchCamera({ mediaType: 'photo' }, (response) => {
@@ -81,7 +95,6 @@ function ClinicRegisterPage({ navigation }) {
     }
   }
 
-
   const renderAnimals = ({ item }) => {
     const isSelected = selectedAnimals.includes(item)
     return (
@@ -110,8 +123,7 @@ function ClinicRegisterPage({ navigation }) {
       </TouchableOpacity>
     )
   }
-  const pagerRef = useRef(null)
-  const [currentPage, setCurrentPage] = useState(0);
+
   const goToNextPage = () => {
     if (currentPage < totalPages - 1) {
       const nextPage = currentPage + 1;
@@ -119,220 +131,190 @@ function ClinicRegisterPage({ navigation }) {
       setCurrentPage(nextPage)
     }
   }
+
   const goToClinicPage = () => {
     navigation.navigate("ClinicAppStack")
   }
-  const [image, setImage] = useState(null)
+
+  const handleRegister = async (values) => {
+    setLoading(true)
+    const auth = getAuth()
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.usermail, values.password);
+      const uid = userCredential.user.uid;
+      try {
+        await createVet(uid, {
+          firstName:values.firstName,
+          lastName:values.lastName,
+          phone:values.phoneNum,
+        })
+      } catch (error) {
+        
+      }
+    } catch (error) {
+
+    }
+  }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <PagerView style={styles.pageContainer} initialPage={0} ref={pagerRef} onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
-          <View key="1">
-            <Formik initialValues={initialFormValues} validationSchema={validationSchema}>
-              {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+    <Formik
+      initialValues={initialFormValues}
+      validationSchema={validationSchema}
+      onSubmit={handleRegister}
+    >
+      {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <PagerView style={styles.pageContainer} initialPage={0} ref={pagerRef} onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
+
+              {/* PAGE 1 */}
+              <View key="1">
                 <View style={styles.pageContainer}>
                   <View style={styles.logo_container}>
-                    <Image
-                      source={require('../../../assets/main_Logo.png')}
-                      style={styles.logo}
-                      resizeMode='contain'
-                    />
+                    <Image source={require('../../../assets/main_Logo.png')} style={styles.logo} resizeMode='contain' />
+                  </View>
+                  <View style={styles.title_container}>
+                    <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
+                  </View>
+                  <View style={styles.input_container}>
+                    <Text style={styles.input_text}>İsim</Text>
+                    <Input value={values.firstName} placeholder="İsminiz..." onType={handleChange('firstName')} onBlur={handleBlur('firstName')} />
+                    {touched.firstName && errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
+                    <Text style={styles.input_text}>Soyisim</Text>
+                    <Input value={values.lastName} placeholder="Soyisminiz..." onType={handleChange('lastName')} onBlur={handleBlur('lastName')} />
+                    {touched.lastName && errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
+                    <Text style={styles.input_text}>Telefon Numarası</Text>
+                    <Input value={values.phoneNum} placeholder="Telefon Numarası..." keyboardType="numeric" onType={handleChange('phoneNum')} onBlur={handleBlur('phoneNum')} />
+                    {touched.phoneNum && errors.phoneNum && <Text style={styles.error}>{errors.phoneNum}</Text>}
+                  </View>
+                  <View style={styles.buton_container}>
+                    <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
+                  </View>
+                </View>
+              </View>
+
+              {/* PAGE 2 */}
+              <View key="2">
+                <View style={styles.pageContainer}>
+                  <View style={styles.logo_container}>
+                    <Image source={require('../../../assets/main_Logo.png')} style={styles.logo} resizeMode='contain' />
                   </View>
                   <View style={styles.title_container}>
                     <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
                   </View>
                   <View style={styles.input_container}>
                     <Text style={styles.input_text}>Klinik Adı</Text>
-                    <Input
-                      value={values.clinic_name}
-                      placeholder="Klinik Adı..."
-                      onType={handleChange('clinic_name')}
-                      onBlur={handleBlur('clinic_name')}
-                    />
-                    {touched.clinic_name && errors.clinic_name && (
-                      <Text style={styles.error}>{errors.clinic_name}</Text>
-                    )}
+                    <Input value={values.clinicName} placeholder="Klinik Adı..." onType={handleChange('clinicName')} onBlur={handleBlur('clinicName')} />
+                    {touched.clinicName && errors.clinicName && <Text style={styles.error}>{errors.clinicName}</Text>}
                     <Text style={styles.input_text}>Klinik Adresi</Text>
-                    <Input
-                      value={values.clinic_address}
-                      placeholder="Klinik Adresi..."
-                      onType={handleChange('clinic_address')}
-                      onBlur={handleBlur('clinic_address')}
-                    //multiline={false}
-                    />
-                    {touched.clinic_address && errors.clinic_address && (
-                      <Text style={styles.error}>{errors.clinic_address}</Text>
-                    )}
-                    <Text style={styles.input_text}>Telefon Numarası</Text>
-                    <Input
-                      value={values.phone_num}
-                      placeholder="Telefon Numarası..."
-                      keyboardType="numeric"
-                      onType={handleChange('phone_num')}
-                      onBlur={handleBlur('phone_num')}
-                    />
-                    {touched.phone_num && errors.phone_num && (
-                      <Text style={styles.error}>{errors.phone_num}</Text>
-                    )}
+                    <Input value={values.clinicAddress} placeholder="Klinik Adresi..." onType={handleChange('clinicAddress')} onBlur={handleBlur('clinicAddress')} />
+                    {touched.clinicAddress && errors.clinicAddress && <Text style={styles.error}>{errors.clinicAddress}</Text>}
                   </View>
                   <View style={styles.buton_container}>
                     <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
                   </View>
-
                 </View>
-              )}
-            </Formik>
-          </View>
+              </View>
 
-          <View key="2">
-            <Formik initialValues={initialFormValues} validationSchema={validationSchema}>
-              {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+              {/* PAGE 3 */}
+              <View key="3">
                 <View style={styles.pageContainer}>
                   <View style={styles.logo_container}>
-                    <Image
-                      source={require('../../../assets/main_Logo.png')}
-                      style={styles.logo}
-                      resizeMode='contain'
-                    />
+                    <Image source={require('../../../assets/main_Logo.png')} style={styles.logo} resizeMode='contain' />
                   </View>
                   <View style={styles.title_container}>
                     <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
                   </View>
                   <View style={styles.input_container}>
                     <Text style={styles.input_text}>Email</Text>
-                    <Input
-                      value={values.usermail}
-                      placeholder="Email.."
-                      onType={handleChange('usermail')}
-                      onBlur={handleBlur('usermail')}
-                    />
-                    {touched.usermail && errors.usermail && (
-                      <Text style={styles.error}>{errors.usermail}</Text>
-                    )}
+                    <Input value={values.usermail} placeholder="Email.." onType={handleChange('usermail')} onBlur={handleBlur('usermail')} />
+                    {touched.usermail && errors.usermail && <Text style={styles.error}>{errors.usermail}</Text>}
                     <Text style={styles.input_text}>Şifre</Text>
-                    <Input
-                      value={values.password}
-                      placeholder="Şifre..."
-                      onType={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                    //multiline={false}
-                    />
-                    {touched.password && errors.password && (
-                      <Text style={styles.error}>{errors.password}</Text>
-                    )}
+                    <Input value={values.password} placeholder="Şifre..." onType={handleChange('password')} onBlur={handleBlur('password')} />
+                    {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
                     <Text style={styles.input_text}>Şifre Tekrarı</Text>
-                    <Input
-                      value={values.repassword}
-                      placeholder="Telefon Numarası..."
-                      keyboardType="numeric"
-                      onType={handleChange('repassword')}
-                      onBlur={handleBlur('repassword')}
-                    />
-                    {touched.repassword && errors.repassword && (
-                      <Text style={styles.error}>{errors.repassword}</Text>
-                    )}
+                    <Input value={values.repassword} placeholder="Şifre Tekrarı..." onType={handleChange('repassword')} onBlur={handleBlur('repassword')} />
+                    {touched.repassword && errors.repassword && <Text style={styles.error}>{errors.repassword}</Text>}
                   </View>
                   <View style={styles.buton_container}>
                     <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
                   </View>
-
                 </View>
-              )}
-            </Formik>
-          </View>
-
-          <View key="3" >
-            <View style={styles.pageContainer}>
-              <View style={styles.logo_container}>
-                <Image
-                  source={require('../../../assets/main_Logo.png')}
-                  style={styles.logo}
-                  resizeMode='contain'
-                />
               </View>
-              <View style={[styles.title_container, {}]}>
-                <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
-              </View>
-              <View style={styles.input_container}>
-                <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
-                  <Text style={{ marginBottom: 30, fontSize: 18, fontStyle: "italic" }}>Galerinden klinik sayfanın başlık görselini ekle</Text>
-                  {!clinicImage ? (
-                    <TouchableOpacity style={styles.add_image_btn} onPress={()=>{setModalVisible(true)}}>
-                      <Icon name="plus" size={40} color="white" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={()=>{setModalVisible(true)}}>
 
-                      <Image
-                        source={{ uri: clinicImage.uri }}
-                        style={{ width: 200, height: 200, }}
-                        resizeMode="contain"
+              {/* PAGE 4 */}
+              <View key="4">
+                <View style={styles.pageContainer}>
+                  <View style={styles.logo_container}>
+                    <Image source={require('../../../assets/main_Logo.png')} style={styles.logo} resizeMode='contain' />
+                  </View>
+                  <View style={styles.title_container}>
+                    <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
+                  </View>
+                  <View style={styles.input_container}>
+                    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                      <Text style={{ marginBottom: 30, fontSize: 18, fontStyle: "italic" }}>Galerinden klinik sayfanın başlık görselini ekle</Text>
+                      {!clinicImage ? (
+                        <TouchableOpacity style={styles.add_image_btn} onPress={() => { setModalVisible(true) }}>
+                          <Icon name="plus" size={40} color="white" />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity onPress={() => { setModalVisible(true) }}>
+                          <Image source={{ uri: clinicImage.uri }} style={{ width: 200, height: 200 }} resizeMode="contain" />
+                        </TouchableOpacity>
+                      )}
+                      <CustomModal
+                        isVisible={modalVisible}
+                        title={"Fotoğraf Yükle"}
+                        message={"Bir Seçenek Belirleyin"}
+                        onClose={() => setModalVisible(false)}
+                        buttons={[
+                          { text: "Galeriden Seç", onPress: handleOpenGallery, theme: "fourth" },
+                          { text: "Fotoğraf Seç", onPress: handleOpenCamera, theme: "third" },
+                          { text: "İptal", onPress: () => setModalVisible(false), theme: "primary" },
+                        ]}
                       />
-
-                    </TouchableOpacity>
-                  )}
-                  <CustomModal
-                    isVisible={modalVisible}
-                    title={"Fotoğraf Yükle"}
-                    message={"Bir Seçenek Belirleyin"}
-                    onClose={() => setModalVisible(false)}
-                    buttons={[
-                      { text: "Galeriden Seç", onPress: handleOpenGallery, theme: "fourth" },
-                      { text: "Fotoğraf Seç", onPress: handleOpenCamera, theme: "third" },
-                      { text: "İptal", onPress: () => setModalVisible(false), theme: "primary" },
-                    ]}
-                  />
-                </View>
-
-              </View>
-              <View style={styles.buton_container}>
-                <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
-              </View>
-            </View>
-          </View>
-
-          <View key="4" >
-            <View style={styles.pageContainer}>
-              <View style={styles.logo_container}>
-                <Image
-                  source={require('../../../assets/main_Logo.png')}
-                  style={styles.logo}
-                  resizeMode='contain'
-                />
-              </View>
-              <View style={styles.title_container}>
-                <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
-              </View>
-              <View style={styles.input_container}>
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  <View style={{ flex: 0.25 }}>
-                    <Text style={{ fontSize: 20, fontStyle: "italic" }}>Bakımını yapacağın patileri seç</Text>
+                    </View>
                   </View>
-                  <View style={{ flex: 0.75 }}>
-                    <FlatList
-                      data={animalList}
-                      renderItem={renderAnimals}
-                      horizontal
-                      //removeClippedSubviews={false}
-                    />
+                  <View style={styles.buton_container}>
+                    <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
                   </View>
                 </View>
               </View>
-              <View style={styles.buton_container}>
-                <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToClinicPage} />
+
+              {/* PAGE 5 */}
+              <View key="5">
+                <View style={styles.pageContainer}>
+                  <View style={styles.logo_container}>
+                    <Image source={require('../../../assets/main_Logo.png')} style={styles.logo} resizeMode='contain' />
+                  </View>
+                  <View style={styles.title_container}>
+                    <Text style={styles.title}>Kliniğini oluşturmak için bir kaç bilgiye ihtiyacımız var...</Text>
+                  </View>
+                  <View style={styles.input_container}>
+                    <View style={{ flex: 1, alignItems: "center" }}>
+                      <View style={{ flex: 0.25 }}>
+                        <Text style={{ fontSize: 20, fontStyle: "italic" }}>Bakımını yapacağın patileri seç</Text>
+                      </View>
+                      <View style={{ flex: 0.75 }}>
+                        <FlatList data={animalList} renderItem={renderAnimals} horizontal />
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.buton_container}>
+                    <Button theme='secondary' text="Kayıt Ol" onPress={handleSubmit} />
+                  </View>
+                </View>
               </View>
+
+            </PagerView>
+            <View style={styles.indicator_container}>
+              <DotIndicator currentPage={currentPage} totalPages={totalPages} />
             </View>
           </View>
-
-        </PagerView>
-
-
-        <View style={styles.indicator_container}>
-          <DotIndicator currentPage={currentPage} totalPages={totalPages} />
         </View>
-      </View>
-    </View>
+      )}
+    </Formik>
   )
 }
 

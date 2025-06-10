@@ -10,23 +10,46 @@ export default StyleSheet.create({
         backgroundColor:color.backgroundGray
     },
     header_container:{
-        flex:1,
+        flex:0.7,
+        //backgroundColor:"red"
     },
     logo_container:{
-        flex:3,
+        flex:0.9,
         justifyContent:"center",
         alignItems:"center",
         //backgroundColor:"red"
     },
     logo:{
-        width:'50%',
-        height:'50%'
+        width:deviceSize.height/5,
+        height:deviceSize.height/5
+    },
+    welcome_text:{
+        textAlign:"center", 
+        color:color.blue,
+        fontSize:deviceSize.width/20,
+        fontWeight:"bold"
     },
     button_container:{
         flex:1,
-        paddingHorizontal:10,
-        justifyContent:"space-evenly",
-        
+        paddingTop:20,
+        justifyContent:"center",
+        alignItems:"flex-start",
+        flexDirection:"row",
+        //backgroundColor:"orange"
+    },
+    button:{
+        justifyContent:"center", 
+        alignItems:"center",
+        width: deviceSize.width/2.5, 
+        height:deviceSize.width/2.5, 
+        borderRadius:10,
+        margin:5
+    },
+    button_text:{
+        fontSize:deviceSize.width/25,
+        color:color.white,
+        fontWeight:"bold",
+        marginTop:5
     },
     copy_right_container:{
         flex:0.15,

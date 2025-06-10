@@ -8,7 +8,7 @@ const Input = ({placeholder, value, onType, isSecure, onBlur,autoCapitalize,keyb
     return(
         <View style={styles.container}>
             <TextInput 
-                style={[styles.input, isFocused && {borderColor:color.brown, borderWidth:2}]}
+                style={[styles.input, isFocused && {borderColor:color.brown, borderBottomWidth:2}]}
                 autoCapitalize={autoCapitalize}
                 placeholder={placeholder}
                 value={value}
@@ -23,7 +23,7 @@ const Input = ({placeholder, value, onType, isSecure, onBlur,autoCapitalize,keyb
                 onFocus={()=>setIsFocused(true)}
             />
         </View>
-        
+        //
     )
 }
 

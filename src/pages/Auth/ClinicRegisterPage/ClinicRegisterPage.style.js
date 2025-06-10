@@ -23,7 +23,7 @@ export default StyleSheet.create({
         flex: 0.5,
         justifyContent: "center",
         alignItems: "center",
-
+        marginHorizontal:10
         //backgroundColor: "yellow",
     },
     title: {
@@ -35,11 +35,11 @@ export default StyleSheet.create({
     input_container: {
         flex: 1.5,
         justifyContent: "center",
-
         //backgroundColor: "blue"
     },
     input_text: {
-        marginLeft: "3%",
+        marginLeft: "5%",
+        
         fontWeight: "600",
         color: color.brown
     },

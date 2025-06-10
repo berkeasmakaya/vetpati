@@ -56,13 +56,15 @@ const UserProfileDrawer = () => {
     >
       <Drawer.Screen name='UserProfilePage' component={UserProfilePage} options={{
         drawerLabel:"Ana Sayfa",
-        drawerIcon:()=>(<Icon name='home' size={40} color={color.green}/>),
-        drawerLabelStyle:{fontSize:20, color:color.green}
+        drawerIcon:()=>(<Icon name='home' size={40} color={color.blue}/>),
+        drawerLabelStyle:{fontSize:20, color:color.blue},
+        drawerActiveBackgroundColor:"transparent"
       }}/>
       <Drawer.Screen name='UserFavoriteClinic' component={UserFavoriteClinic} options={{
         drawerLabel:"Favori Klinikler",
-        drawerIcon:()=>(<Icon name='star' size={40} color={color.green}/>),
-        drawerLabelStyle:{fontSize:20, color:color.green}
+        drawerIcon:()=>(<Icon name='star' size={40} color={color.blue}/>),
+        drawerLabelStyle:{fontSize:20, color:color.blue},
+        drawerActiveBackgroundColor:"transparent"
       }}/>
     </Drawer.Navigator>
   )
@@ -130,7 +132,7 @@ const ClinicDrawer = () => {
       }}/>
       <Drawer.Screen name='ClinicEditPage' component={ClinicEditPage} options={{ 
         drawerLabel:"Profili Düzenle",
-        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.blue}/>),
+        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.green}/>),
         drawerLabelStyle:{fontSize:20, color:color.blue}
       }}/>
     </Drawer.Navigator>
@@ -194,9 +196,9 @@ function App() {
       <Provider store={store}>
         <AlertNotificationRoot
         colors={[{
-          card:color.blue
+          card:color.backgroundGray
         }]}
-        toastConfig={{titleStyle:{color:color.white}, textBodyStyle:{color:color.white}}}
+        toastConfig={{titleStyle:{color:color.blue}, textBodyStyle:{color:"#000000"}}}
         >
           <MainApp />
         </AlertNotificationRoot>

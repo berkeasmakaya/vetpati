@@ -9,8 +9,8 @@ export default StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        //backgroundColor:color.white,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)', // Yarı saydam arka plan
+        backgroundColor:color.white,
+        //backgroundColor: 'rgba(0, 0, 0, 0.5)', // Yarı saydam arka plan
         justifyContent: "center",
         alignItems: "center",
         zIndex:10

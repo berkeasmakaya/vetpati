@@ -32,8 +32,8 @@ const PawAgePickerModal = ({ isVisible, onClose, onSave }) => {
                             onValueChange={(itemValue) => setYear(itemValue)}
                             style={styles.picker}
                         >
-                            {Array.from({ length: 20 }, (_, i) => (
-                                <Picker.Item key={i} label={`${i + 1}`} value={i + 1} />
+                            {Array.from({ length: 21 }, (_, i) => (
+                                <Picker.Item key={i} label={`${i}`} value={i} />
                             ))}
                         </Picker>
                     </View>

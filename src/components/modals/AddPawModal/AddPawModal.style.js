@@ -34,7 +34,7 @@ export default StyleSheet.create({
         //backgroundColor: "red"
     },
     input_container: {
-        marginVertical: 5,
+        marginVertical: 10,
     },
     input_text: {
         marginLeft: "4%",
@@ -74,5 +74,11 @@ export default StyleSheet.create({
         borderRadius: 10,
         marginBottom: 20
 
-    }
+    },
+    error:{
+        color:"#000000",
+        fontWeight:"bold",
+        fontSize:15,
+        textAlign:"center"
+    },
 })

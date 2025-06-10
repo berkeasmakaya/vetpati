@@ -13,6 +13,10 @@ export default StyleSheet.create({
     scrollContainer: {
       flexGrow: 1, 
     },
+    pageContainer:{
+        flex: 1,
+        backgroundColor: color.backgroundGray,
+    },
     logo_container:{
         height:headerHeight,
         justifyContent:"center",
@@ -41,7 +45,9 @@ export default StyleSheet.create({
         marginLeft: '5%',
     },
     btn_container:{
-        paddingHorizontal:10
+        flex: 0.5,
+        justifyContent: "center",
+        alignItems: "center",
     },
     error:{
         color:"#000000",

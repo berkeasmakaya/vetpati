@@ -6,11 +6,10 @@ const width = Dimensions.get("window").width
 export default StyleSheet.create({
     container:{
         flexDirection:"row",
-        //borderWidth:1,
-        margin:20,
+        margin:10,
         borderRadius:10,
         padding:10,
-        backgroundColor:color.backgroundGray,
+        backgroundColor:color.white,
         shadowOffset:{
             width:5,
             height:5
@@ -21,26 +20,23 @@ export default StyleSheet.create({
         elevation:12,
     },
     image_container:{
-        //backgroundColor:"red",
-        borderRadius:10,
-        flex:0.25,
+        flex:0.35,
         justifyContent:"center",
         alignItems:"center",
-        padding:10
     },
     image:{
-        borderWidth:5,
-        borderRadius:50,
-        width:100,
-        height:100,
-        borderColor:color.white
+        flex:1,      
+        width:"100%",
+        height:"100%",
+        borderRadius:10,
+        borderColor:color.backgroundGray,
+        //backgroundColor:color.backgroundGray
     },
     content_container:{
-        flex:0.75,  
+        flex:0.65,  
         paddingLeft:10,
     },
     content_info_container:{
-        flexDirection:"row",
         padding:10,
         justifyContent:"space-between"
     },
@@ -51,23 +47,20 @@ export default StyleSheet.create({
     paw_age:{
         fontSize:13
     },
-    content_edit_btn_container:{
-        //backgroundColor:"red"
+    content_butons_container:{
+        marginVertical:10,
     },
-    buttons_container:{
-        //backgroundColor:"yellow",
+    buttons:{
+        flex:1,
+        borderRadius:7, 
+        flexDirection:"row", 
+        justifyContent:"center", 
+        alignItems:"center",
+        marginVertical:2.5, 
+        paddingVertical:5
     },
-    butons:{
-        flex:1, 
-        margin: 5, 
-        paddingHorizontal: 10, 
-        paddingVertical: 5,  
-        borderRadius:6,
-    },
-    butons_text:{
-        textAlign: "center", 
+    buttons_text:{
         color:color.white, 
-        fontWeight:"bold",
-        fontSize:width/30
+        fontWeight:"bold"
     }
 })

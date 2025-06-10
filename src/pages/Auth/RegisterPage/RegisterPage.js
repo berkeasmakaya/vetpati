@@ -1,8 +1,8 @@
-import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import React, { useState, useRef } from 'react';
 import Input from '../../../components/Input/Input';
 import styles from './RegisterPage.style';
-import Button from '../../../components/Button/Button';
+import FloatingButton from '../../../components/FloatingButton/FloatingButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,14 +10,32 @@ import color from '../../../styles/color';
 import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth'
 import Loading from '../../../components/Loading/Loading';
 import { Toast, ALERT_TYPE } from "react-native-alert-notification";
+import PagerView from 'react-native-pager-view';
+import Button from '../../../components/Button/Button';
+import { useSelector } from 'react-redux';
+import { createUser } from '../../../services/userApi';
 
 const initialFormValues = {
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  address: '',
   usermail: '',
   password: '',
   repassword: '',
 }
 
 const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required("İsim alanı boş bırakılamaz!")
+    .min(3, "İsim en az 3 harfli olmalı!"),
+  lastName: Yup.string()
+    .required("Soyisim alanı boş bırakılamaz!")
+    .min(3, "Soyisim en az 3 harfli olmalı!"),
+  address: Yup.string(),
+  phoneNumber: Yup.string()
+    .min(10, "Telefon numarası en az 10 haneli olmalıdır!")
+    .max(11, "Telefon numarası en fazla 11 haneli olmalıdır!"),
   usermail: Yup.string()
     .email("E-mail formatına uygun girilmeli!")
     .required("E-mail alanı boş bırakılamaz!"),
@@ -29,136 +47,203 @@ const validationSchema = Yup.object().shape({
     .required('Şifre Onayı Zorunludur!'),
 });
 
-function RegisterPage({ navigation }) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showRepassword, setShowRepassword] = useState(false)
-  const [loading, setLoading] = useState(false)
+const totalPages = 2;
 
-  const goToLoginPage = () => {
-    navigation.navigate('LoginPage');
+function RegisterPage({ navigation }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepassword, setShowRepassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const pagerRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const goToLoginPage = () => navigation.navigate('LoginPage');
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      const nextPage = currentPage + 1;
+      pagerRef.current?.setPage(nextPage);
+      setCurrentPage(nextPage);
+    }
   };
 
   const handleRegister = async (values) => {
-    setLoading(true)
+    setLoading(true);
     const auth = getAuth();
     try {
-      await createUserWithEmailAndPassword(auth, values.usermail, values.password)
-      setLoading(false)
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "Başarılı",
-        textBody: "Giriş Başarılı",
-        autoClose: 500
-      })
-      navigation.navigate("UserAppStack")
+      const userCredential = await createUserWithEmailAndPassword(auth, values.usermail, values.password);
+      const uid = userCredential.user.uid;
 
+      try {
+        await createUser(uid, {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phoneNumber: values.phoneNumber,
+          address: values.address
+        });
+
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Başarılı",
+          textBody: "Kayıt Olma Başarılı",
+          autoClose: 500
+        });
+
+        navigation.navigate("UserAppStack");
+
+      } catch (dbError) {
+        await userCredential.user.delete();
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "HATA",
+          textBody: "Bir Şeyler Ters Gitti",
+          autoClose: 800
+        });
+      }
     } catch (error) {
-      setLoading(false)
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "HATA",
         textBody: error.code,
         autoClose: 800
-      })
+      });
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
+    <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+        {loading && <Loading />}
+        <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={handleRegister}>
+          {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+            <PagerView style={styles.pageContainer} initialPage={0} ref={pagerRef} onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
 
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      {loading && <Loading />}
-      <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={handleRegister}>
-        {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
-          <>
-            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-              <View style={styles.logo_container}>
-                <Image
-                  style={styles.logo}
-                  source={require('../../../assets/main_Logo.png')}
-                  resizeMode="contain"
-                />
-              </View>
+              <View key="1">
+                <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+                  <View style={styles.logo_container}>
+                    <Image style={styles.logo} source={require('../../../assets/main_Logo.png')} resizeMode="contain" />
+                  </View>
 
-              <View style={styles.input_container}>
+                  <View style={styles.input_container}>
+                    <Text style={styles.input_text}>İsim</Text>
+                    <Input
+                      value={values.firstName}
+                      onType={handleChange('firstName')}
+                      onBlur={handleBlur('firstName')}
+                      placeholder="Lütfen İsminizi Giriniz..."
+                    />
+                    {touched.firstName && errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
 
-                <View style={styles.mail_input}>
-                  <Text style={styles.input_text}>Mail Adresi</Text>
-                  <Input
-                    value={values.usermail}
-                    onType={handleChange('usermail')}
-                    onBlur={handleBlur('usermail')}
-                    placeholder="Lütfen Mailinizi Giriniz..."
-                  />
-                  {touched.usermail && errors.usermail && (
-                    <Text style={styles.error}>{errors.usermail}</Text>
-                  )}
-                </View>
+                    <Text style={styles.input_text}>Soyisim</Text>
+                    <Input
+                      value={values.lastName}
+                      onType={handleChange('lastName')}
+                      onBlur={handleBlur('lastName')}
+                      placeholder="Lütfen Soyisminizi Giriniz..."
+                    />
+                    {touched.lastName && errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
 
-                <View style={styles.password_input}>
-                  <Text style={styles.input_text}>Şifre</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View style={{ flex: 1 }}>
-                      <Input
-                        value={values.password}
-                        placeholder="Lütfen Şifrenizi Giriniz..."
-                        onType={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        isSecure={!showPassword}
-                        autoCapitalize="none"
-                      />
-                    </View>
-                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: 20 }}>
-                      <Icon name={showPassword ? "eye-off" : "eye"} size={30} color={color.brown} />
+                    <Text style={styles.input_text}>Telefon Numarası</Text>
+                    <Input
+                      value={values.phoneNumber}
+                      onType={handleChange('phoneNumber')}
+                      onBlur={handleBlur('phoneNumber')}
+                      placeholder="05xx xxx xx xx"
+                    />
+                    {touched.phoneNumber && errors.phoneNumber && <Text style={styles.error}>{errors.phoneNumber}</Text>}
+
+                    <Text style={styles.input_text}>Adres</Text>
+                    <Input
+                      value={values.address}
+                      onType={handleChange('address')}
+                      onBlur={handleBlur('address')}
+                      placeholder="İl / İlçe"
+                    />
+                    {touched.address && errors.address && <Text style={styles.error}>{errors.address}</Text>}
+                  </View>
+
+                  <View style={styles.btn_container}>
+                    <FloatingButton icon_name="arrow-right" icon_color={color.blue} onPress={goToNextPage} />
+                  </View>
+
+                  <View style={styles.bottom_container}>
+                    <Text style={styles.text}>Hesabın Var Mı?</Text>
+                    <TouchableOpacity onPress={goToLoginPage}>
+                      <Text style={styles.text_2}> GİRİŞ YAP</Text>
                     </TouchableOpacity>
                   </View>
-                  {touched.password && errors.password && (
-                    <Text style={styles.error}>{errors.password}</Text>
-                  )}
-                </View>
+                </ScrollView>
+              </View>
 
-                <View style={styles.password_input}>
-                  <Text style={styles.input_text}>Şifre Onay</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center", }}>
-                    <View style={{ flex: 1 }}>
-                      <Input
-                        value={values.repassword}
-                        placeholder="Lütfen Şifrenizi Giriniz..."
-                        onType={handleChange('repassword')}
-                        onBlur={handleBlur('repassword')}
-                        isSecure={!showRepassword}
-                        autoCapitalize="none"
-                      />
+              <View key="2">
+                <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+                  <View style={styles.logo_container}>
+                    <Image style={styles.logo} source={require('../../../assets/main_Logo.png')} resizeMode="contain" />
+                  </View>
+
+                  <View style={styles.input_container}>
+                    <Text style={styles.input_text}>Mail Adresi</Text>
+                    <Input
+                      value={values.usermail}
+                      onType={handleChange('usermail')}
+                      onBlur={handleBlur('usermail')}
+                      placeholder="E-mail adresinizi giriniz..."
+                    />
+                    {touched.usermail && errors.usermail && <Text style={styles.error}>{errors.usermail}</Text>}
+
+                    <Text style={styles.input_text}>Şifre</Text>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <View style={{ flex: 1 }}>
+                        <Input
+                          value={values.password}
+                          onType={handleChange('password')}
+                          onBlur={handleBlur('password')}
+                          placeholder="Şifrenizi giriniz..."
+                          isSecure={!showPassword}
+                        />
+                      </View>
+                      <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: 20 }}>
+                        <Icon name={showPassword ? "eye-off" : "eye"} size={30} color={color.brown} />
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => setShowRepassword(!showRepassword)} style={{ position: "absolute", right: 20 }}>
-                      <Icon name={showRepassword ? "eye-off" : "eye"} size={30} color={color.brown} />
+                    {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
+
+                    <Text style={styles.input_text}>Şifre Onay</Text>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <View style={{ flex: 1 }}>
+                        <Input
+                          value={values.repassword}
+                          onType={handleChange('repassword')}
+                          onBlur={handleBlur('repassword')}
+                          placeholder="Şifrenizi tekrar giriniz..."
+                          isSecure={!showRepassword}
+                        />
+                      </View>
+                      <TouchableOpacity onPress={() => setShowRepassword(!showRepassword)} style={{ position: "absolute", right: 20 }}>
+                        <Icon name={showRepassword ? "eye-off" : "eye"} size={30} color={color.brown} />
+                      </TouchableOpacity>
+                    </View>
+                    {touched.repassword && errors.repassword && <Text style={styles.error}>{errors.repassword}</Text>}
+                  </View>
+
+                  <View style={{ paddingHorizontal: 10 }}>
+                    <Button theme='secondary' text="Kayıt Ol" onPress={handleSubmit} />
+                  </View>
+
+                  <View style={styles.bottom_container}>
+                    <Text style={styles.text}>Hesabın Var Mı?</Text>
+                    <TouchableOpacity onPress={goToLoginPage}>
+                      <Text style={styles.text_2}> GİRİŞ YAP</Text>
                     </TouchableOpacity>
                   </View>
-                  {touched.repassword && errors.repassword && (
-                    <Text style={styles.error}>{errors.repassword}</Text>
-                  )}
-                </View>
+                </ScrollView>
               </View>
-
-              <View style={styles.btn_container}>
-                <Button text="Kayıt Ol" theme="secondary" onPress={handleSubmit} />
-              </View>
-
-
-              <View style={styles.bottom_container}>
-                <Text style={styles.text}>Hesabın Var Mı?</Text>
-                <TouchableOpacity onPress={goToLoginPage}>
-                  <Text style={styles.text_2}> GİRİŞ YAP</Text>
-                </TouchableOpacity>
-              </View>
-
-            </ScrollView>
-          </>
-        )}
-      </Formik>
-    </KeyboardAvoidingView>
+            </PagerView>
+          )}
+        </Formik>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 

@@ -16,6 +16,7 @@ const CustomDrawerContent = (props) => {
     const dispatch = useDispatch();
     // const { isEditUserModalVisible, isAddPawModalVisible, isEditPawModalVisible } = useSelector((state) => state.modals)
     const { isLogOutModalVisible } = useSelector((state) => state.modals)
+    const {firstName, lastName} = useSelector((state)=>state.users)
 
     const handleLogOut = async () => {
         console.log("handleLogout çalıştı")
@@ -55,10 +56,10 @@ const CustomDrawerContent = (props) => {
                         />
                     </View>
                     <TouchableOpacity style={styles.drawer_close} onPress={() => props.navigation.closeDrawer()}>
-                        <Icon name="reorder-horizontal" size={30} color={color.blue} />
+                        <Icon name="arrow-left" size={30} color={color.green} />
                     </TouchableOpacity>
 
-                    <Text style={styles.vet_name}>Berke Asmakaya</Text>
+                    <Text style={styles.vet_name}>{firstName} {lastName}</Text>
 
                     <DrawerItemList {...props} />
                     {drawerType === "UserProfile" && (

@@ -3,10 +3,12 @@ import color from "../../../styles/color";
 
 export default StyleSheet.create({
     modal:{
-        margin:0
+        margin:0,
+        justifyContent:"flex-end"
     },
     container:{
-        flex:1, 
+        flex:0.85, 
+        borderRadius:10,
         backgroundColor:color.backgroundGray
     },
     header:{
@@ -33,9 +35,10 @@ export default StyleSheet.create({
         justifyContent:"center"
     },
     input_container:{
-        marginVertical:5
+        marginVertical:10
     },
     input_text:{
+        
         marginLeft:"4%", 
         color:color.brown, 
         fontWeight:"bold"

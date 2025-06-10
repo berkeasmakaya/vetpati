@@ -4,6 +4,7 @@ import color from "../../styles/color";
 export default StyleSheet.create({
     container:{
         flex:1,
+        //backgroundColor:color.backgroundGray
     },
     header_container:{
         //backgroundColor:"red", 

@@ -6,11 +6,11 @@ export default StyleSheet.create({
         margin:10,
     },
     input:{
-        //borderWidth:1,
+        borderBottomWidth:1,
         borderRadius:10,
         borderColor:color.brown,
-        backgroundColor:color.white,
+        backgroundColor:color.backgroundGray,
         paddingHorizontal:10,
-        height:45
+        height:40
     }
 })
