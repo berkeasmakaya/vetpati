@@ -18,20 +18,22 @@ export default StyleSheet.create({
         height:"100%"
     },
     info_container:{
-        flex:1,
-        justifyContent:"center",
+        //flex:1,
+        //justifyContent:"center",
         alignItems:"center",
-        paddingVertical:30,
-        paddingHorizontal:15,
+        paddingVertical:10,
+        //paddingHorizontal:15,
+        //backgroundColor:"orange"
     },
     clinic_title:{
         fontWeight:"bold",
         fontSize:24,
         marginBottom:5,
+        //backgroundColor:"blue"
     },
     clinic_working_hours:{
         fontWeight:"300",
-        marginBottom:5
+        marginBottom:10
     },
     clinic_info:{
         fontWeight:"500",

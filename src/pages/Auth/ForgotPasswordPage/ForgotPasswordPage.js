@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, Image, Text } from "react-native";
+import { SafeAreaView, View, Image, Text, KeyboardAvoidingView } from "react-native";
 import color from "../../../styles/color";
 import Input from "../../../components/Input/Input";
 import styles from './ForgotPasswordPage.style'
@@ -24,58 +24,69 @@ const validationSchema = Yup.object().shape({
 
 function ForgotPasswordPage() {
     return (
-        <Formik
-            initialValues={initialFormValues}
-            validationSchema={validationSchema}
-        >
-            {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
-                <>
-                    <SafeAreaView style={styles.container}>
-                        <View style={styles.image_container}>
-                            <Image
-                                source={require('../../../assets/main_Logo.png')}
-                                style={styles.image}
+        <View style={{ flex: 1 }}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.container}
+            >
 
-                            />
-                        </View>
-                        <View style={styles.inner_container}>
-                            <Text style={styles.header}>Şifreni Değiştir</Text>
-                            <View style={styles.input_main_container}>
-                                <View style={styles.input_container}>
-                                    <Text style={styles.input_text}>Yeni Şifre</Text>
-                                    <Input
-                                        isSecure={true}
-                                        placeholder="Yeni Şifrenizi Giriniz"
-                                        value={values.password}
-                                        onType={handleChange("password")}
-                                        onBlur={handleBlur("password")}
-                                    />
-                                    {touched.password && errors.password && (
-                                        <Text style={styles.error}>{errors.password}</Text>
-                                    )}
+                <Formik
+                    initialValues={initialFormValues}
+                    validationSchema={validationSchema}
+                >
+                    {({ values, handleChange, handleBlur, handleSubmit, touched, errors }) => (
+                        <>
+                            <View style={styles.image_container}>
+                                <Image
+                                    source={require('../../../assets/main_Logo.png')}
+                                    style={styles.image}
+                                    resizeMode="contain"
+                                />
+                            </View>
+
+                            <View style={styles.header_container}>
+                                <Text style={styles.header}>Şifreni Değiştir</Text>
+                            </View>
+                            <View style={styles.inner_container}>
+                                <View style={styles.input_main_container}>
+                                    <View style={styles.input_container}>
+                                        <Text style={styles.input_text}>Yeni Şifre</Text>
+                                        <Input
+                                            isSecure={true}
+                                            placeholder="Yeni Şifrenizi Giriniz"
+                                            value={values.password}
+                                            onType={handleChange("password")}
+                                            onBlur={handleBlur("password")}
+                                        />
+                                        {touched.password && errors.password && (
+                                            <Text style={styles.error}>{errors.password}</Text>
+                                        )}
+                                    </View>
+
+                                    <View style={styles.input_container}>
+                                        <Text style={styles.input_text}>Yeni Şifre Tekrar</Text>
+                                        <Input
+                                            isSecure={true}
+                                            placeholder="Yeni Şifrenizi Tekrar Giriniz"
+                                            value={values.repassword}
+                                            onType={handleChange("repassword")}
+                                            onBlur={handleBlur("repassword")}
+                                        />
+                                        {touched.repassword && errors.repassword && (
+                                            <Text style={styles.error}>{errors.repassword}</Text>
+                                        )}
+                                    </View>
                                 </View>
-                                <View style={styles.input_container}>
-                                    <Text style={styles.input_text}>Yeni Şifre Tekrar</Text>
-                                    <Input
-                                        isSecure={true}
-                                        placeholder="Yeni Şifrenizi Tekrar Giriniz"
-                                        value={values.repassword}
-                                        onType={handleChange("repassword")}
-                                        onBlur={handleBlur("repassword")}
-                                    />
-                                    {touched.repassword && errors.repassword && (
-                                        <Text style={styles.error}>{errors.repassword}</Text>
-                                    )}
-                                </View>
+
                             </View>
                             <View style={styles.buton_container}>
                                 <Button text="Kaydet" theme="fourth" onPress={handleSubmit} />
                             </View>
-                        </View>
-                    </SafeAreaView>
-                </>
-            )}
-        </Formik>
+                        </>
+                    )}
+                </Formik>
+            </KeyboardAvoidingView>
+        </View>
     )
 }
 

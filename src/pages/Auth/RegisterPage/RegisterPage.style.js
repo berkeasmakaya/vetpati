@@ -2,8 +2,10 @@ import { StyleSheet, Dimensions } from "react-native"
 import color from "../../../styles/color";
 
 const deviceSize = Dimensions.get("window");
-const headerHeight = deviceSize.height * 0.35; 
-const bottomHeight = deviceSize.height * 0.09;
+const headerHeight = deviceSize.height * 0.2; 
+const inputHeight = deviceSize.height * 0.6
+const btnContainerHeight = deviceSize.height * 0.1
+const bottomHeight = deviceSize.height * 0.1;
 
 export default StyleSheet.create({
     container:{
@@ -16,38 +18,37 @@ export default StyleSheet.create({
     pageContainer:{
         flex: 1,
         backgroundColor: color.backgroundGray,
+        //backgroundColor:"red"
     },
     logo_container:{
         height:headerHeight,
-        justifyContent:"center",
+        justifyContent:"flex-end",
         alignItems:"center",
         //backgroundColor:"red"
     },
     logo:{
-        width:'50%',
-        height:'50%'
+        width:'60%',
+        height:'60%',
+        marginBottom:"3%"
+    },
+    input_main_container:{
+        height:inputHeight,
+        justifyContent:"center",
+        //backgroundColor:"blue",
     },
     input_container:{
-        flex:1,
-        justifyContent:"center",
-    },
-    mail_input:{
-        marginVertical:10,
-    },
-    password_input:{
-        marginVertical:10,
-    },
-    respassword_input:{
-        marginVertical:10,
+        marginBottom:"4%"
     },
     input_text:{
         color:color.brown,
         marginLeft: '5%',
+        marginBottom:"-1%"
     },
     btn_container:{
-        flex: 0.5,
+        height:btnContainerHeight,
         justifyContent: "center",
         alignItems: "center",
+        //backgroundColor:"orange"
     },
     error:{
         color:"#000000",
@@ -66,7 +67,7 @@ export default StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         height: bottomHeight ,
-        //backgroundColor:"red",
+        //backgroundColor:"yellow",
     },
     text:{
         color:'#000000'

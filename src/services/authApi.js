@@ -4,8 +4,6 @@ import Config from "react-native-config";
 export const getUserType = async (uid)=> {
     try {
             const URL = Platform.OS ==="ios" ? Config.BACKEND_URL_IOS: Config.BACKEND_URL_AND;
-            console.log(URL)
-            console.log(uid)
             const response = await fetch(`${URL}auth/user-type/${uid}`)
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);

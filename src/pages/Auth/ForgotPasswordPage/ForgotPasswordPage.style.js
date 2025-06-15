@@ -1,5 +1,11 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import color from "../../../styles/color";
+
+const deviceSize = Dimensions.get("window")
+const logoContainerHeight = deviceSize.height*0.3
+const innerHeight = deviceSize.height*0.48
+const headerHeight = deviceSize.height* 0.1
+const btnHeight = deviceSize.height * 0.1
 
 export default StyleSheet.create({
     container:{
@@ -8,46 +14,51 @@ export default StyleSheet.create({
     },
     image_container:{
         //backgroundColor:"red", 
-        justifyContent:"center", 
+        height:logoContainerHeight,
+        justifyContent:"flex-end", 
         alignItems:"center",
-        marginVertical:30
     },
     image:{
-        height:150, 
-        width:150
+        height:"70%", 
+        width:"70%",
+        paddingBottom:"5%"
     },
-    inner_container:{
-        backgroundColor:color.brown, 
-        //borderWidth:1, 
-        margin:30, 
-        borderRadius:10, 
-        padding:20
+    header_container:{
+        height:headerHeight,
+        //backgroundColor:"yellow",
+        justifyContent:"center"
     },
     header:{
         textAlign:"center", 
-        fontSize:25, 
+        fontSize:deviceSize.width/20, 
         fontWeight:"bold", 
-        color:color.white
+        color:color.brown,
+        //marginVertical:"5%"
+    },
+    inner_container:{
+        height:innerHeight, 
+        paddingTop:"5%",
+        //backgroundColor:"blue"
     },
     input_main_container:{
-        //backgroundColor:"blue", 
-        padding:5,
-        marginTop:10
+
     },
-    input_container:{
-        //backgroundColor:"red", 
-        marginVertical:10
+    input_container:{ 
+        marginBottom:"4%"
     },
     input_text:{
         marginLeft:"5%",
-        color:color.white,
+        color:color.brown,
         fontWeight:"bold"
     },
     buton_container:{
-        marginTop:10
+        height:btnHeight,
+        justifyContent:"center",
+        alignItems:"center",
+        //backgroundColor:"red"
     },
     error:{
-        color:color.white,
+        color:"black",
         fontWeight:"bold",
         fontSize:15,
         textAlign:"center"

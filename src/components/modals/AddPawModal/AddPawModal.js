@@ -127,6 +127,7 @@ const AddPawModal = ({ isVisible, onClose, onAddSuccess }) => {
                 image: imageUrl,
                 species: speciesText,
             }
+            console.log(ownerId)
             await createPet(ownerId, petData);
             Toast.show({
                 type: ALERT_TYPE.SUCCESS,

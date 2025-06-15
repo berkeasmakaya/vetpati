@@ -2,8 +2,10 @@ import { StyleSheet, Dimensions } from "react-native";
 import color from "../../../styles/color"
 
 const deviceSize = Dimensions.get("window");
-const headerHeight = deviceSize.height * 0.35;
-const bottomHeight = deviceSize.height * 0.09;
+const headerHeight = deviceSize.height * 0.30;
+const inputHeight = deviceSize.height * 0.5;
+const btnContainerHeight = deviceSize.height * 0.1
+const bottomHeight = deviceSize.height * 0.1;
 
 export default StyleSheet.create({
     container:{
@@ -23,25 +25,23 @@ export default StyleSheet.create({
         width:'50%',
         height:'50%'
     },
-    input_container:{
-        flex:1,
+    input_main_container:{
+        height:inputHeight,
         justifyContent:"center",
         //backgroundColor:"blue",
     },
-    mail_input:{
-        //backgroundColor:"red",
-        marginVertical:10
-    },
-    password_input:{
-        //backgroundColor:"yellow",
-        marginVertical:10,
+     input_container:{
+        marginBottom:"4%"
     },
     input_text:{
         color:color.brown,
         marginLeft:'5%',
     },
     btn_container:{
-        paddingHorizontal:10
+        height:btnContainerHeight,
+        justifyContent:"center",
+        alignItems:"center",
+        //backgroundColor:"yellow"
     },
     error:{
         color:"#000000",
@@ -50,7 +50,7 @@ export default StyleSheet.create({
         textAlign:"center"
     },
     forgot_password_container:{
-        marginTop:20,
+        marginTop:"5%"
     },
     forgot_password:{
         color:color.brown,

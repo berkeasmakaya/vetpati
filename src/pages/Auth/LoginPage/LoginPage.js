@@ -10,10 +10,11 @@ import color from '../../../styles/color';
 import { getAuth, signInWithEmailAndPassword } from '@react-native-firebase/auth';
 import { Toast, ALERT_TYPE } from "react-native-alert-notification";
 import Loading from '../../../components/Loading/Loading';
-import { getUserData } from '../../../services/userApi';
 import { useDispatch } from 'react-redux';
 import { setAddress, setFirstName, setLastName, setPhoneNumber } from '../../../redux/userSlice';
 import { getUserType } from '../../../services/authApi';
+import { getClinicByVet } from '../../../services/clinicApi';
+import { setClinicName, setClinicHeaderImage, setClinicAddress, setAnimalTypes, setDescription } from '../../../redux/clinicSlice';
 
 
 const initialFormValues = {
@@ -44,7 +45,7 @@ function LoginPage({ navigation }) {
     const auth = getAuth();
     try {
       const userCredentail = await signInWithEmailAndPassword(auth, values.usermail, values.password)
-      const uid = userCredentail.user.uid;
+      const uid = userCredentail.user.uid;   
       const response = await getUserType(uid)
       const { userType, data } = response;
 
@@ -64,6 +65,18 @@ function LoginPage({ navigation }) {
         });
 
       } else if (userType === "vet") {
+        console.log(data)
+        try {
+          console.log(data._id)
+          const response = await getClinicByVet(data._id)
+          dispatch(setClinicName(response.clinicName))
+          dispatch(setClinicAddress(response.address))
+          dispatch(setDescription(response.description))
+          dispatch(setClinicHeaderImage(response.clinicHeaderImage))
+          dispatch(setAnimalTypes(response.setAnimalTypes))
+        } catch (error) {
+          
+        }
         navigation.navigate("ClinicAppStack");
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
@@ -110,8 +123,8 @@ function LoginPage({ navigation }) {
                 />
               </View>
 
-              <View style={styles.input_container}>
-                <View style={styles.mail_input}>
+              <View style={styles.input_main_container}>
+                <View style={styles.input_container}>
                   <Text style={styles.input_text}>Mail Adresi</Text>
                   <Input
                     value={values.usermail}
@@ -124,7 +137,7 @@ function LoginPage({ navigation }) {
                     <Text style={styles.error}>{errors.usermail}</Text>
                   )}
                 </View>
-                <View style={styles.password_input}>
+                <View style={styles.input_container}>
                   <Text style={styles.input_text}>Şifre</Text>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View style={{ flex: 1 }}>

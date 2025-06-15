@@ -30,7 +30,7 @@ function WelcomePage({ navigation }) {
   }
   const goToClinicRegisterPage = () => {
     toggleVetModal()
-    navigation.navigate("ClinicRegisterPage");
+    navigation.navigate("VetRegisterPage");
   }
   return (
 
@@ -44,8 +44,8 @@ function WelcomePage({ navigation }) {
             source={require('../../assets/main_Logo.png')}
             resizeMode='contain'
           />
-        </View>
         <Text style={styles.welcome_text}>VetPati'ye Hoşgeldiniz</Text>
+        </View>
 
       </View>
 

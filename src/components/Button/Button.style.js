@@ -1,17 +1,19 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import color from '../../styles/color';
+const btn_text_font_size = Dimensions.get("window").width/20
 
 const base_style = StyleSheet.create({
     container:{
+        width:Dimensions.get("window").width/1.2,
+        //height:Dimensions.get("window").height/20,
         borderRadius:20,
         borderWidth:1,
         justifyContent:"center",
         alignItems:"center",
-        padding:15,
-        //margin:15,
+        padding:"3%"
     },
     text:{
-        fontSize:20,
+        fontSize:btn_text_font_size,
         fontWeight:"bold"
     }
 })

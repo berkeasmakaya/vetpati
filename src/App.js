@@ -7,7 +7,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import RegisterPage from './pages/Auth/RegisterPage/RegisterPage';
 import LoginPage from './pages/Auth/LoginPage/LoginPage';
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import ClinicRegisterPage from "./pages/Auth/ClinicRegisterPage/ClinicRegisterPage";
 import UserMainPage from "./pages/UserMainPage/UserMainPage";
 import UserClinicDetailPage from "./pages/UserClinicDetailPage/UserClinicDetailPage";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,6 +26,8 @@ import store from './redux/store';
 import UserFavoriteClinic from './pages/UserFavoriteClinicPage/UserFavoriteClinicPage';
 import UserGetApptPage from './pages/UserGetApptPage/UserGetApptPage';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
+import VetRegisterPage from './pages/Auth/VetRegisterPage/VetRegisterPage';
+import CreateClinicPage from './pages/Auth/CreateClinicPage/CreateClinicPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -39,8 +40,9 @@ const AuthStack = () => {
       <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
       <Stack.Screen name="RegisterPage" component={RegisterPage} options={{ headerShown: false }} />
       <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
-      <Stack.Screen name="ClinicRegisterPage" component={ClinicRegisterPage} options={{ headerShown: false }} />
+      <Stack.Screen name="VetRegisterPage" component={VetRegisterPage} options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} options={{headerShown:false}} />
+      <Stack.Screen name='CreateClinicPage' component={CreateClinicPage} options={{headerShown:false}} />
     </Stack.Navigator>
   )
 }
@@ -132,7 +134,7 @@ const ClinicDrawer = () => {
       }}/>
       <Drawer.Screen name='ClinicEditPage' component={ClinicEditPage} options={{ 
         drawerLabel:"Profili Düzenle",
-        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.green}/>),
+        drawerIcon:()=>(<Icon name='account-edit' size={40} color={color.blue}/>),
         drawerLabelStyle:{fontSize:20, color:color.blue}
       }}/>
     </Drawer.Navigator>
