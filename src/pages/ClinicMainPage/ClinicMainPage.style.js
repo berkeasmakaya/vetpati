@@ -78,7 +78,33 @@ export default StyleSheet.create({
         //backgroundColor:"red",
         paddingBottom:10,
     },
+    close_btn:{
+        width:40,
+        height:40,
+        backgroundColor:color.blue,
+        justifyContent:"center",
+        alignItems:"center",
+        position: "absolute",
+        borderRadius: 100,
+        right:-12,
+        top:-14,
+    },
+    get_location_button:{
+        backgroundColor:color.blue,
+        paddingVertical:5,
+        paddingHorizontal:15,
+        alignSelf:'center',
+        borderRadius:8,
+        shadowColor:"#000",
+        shadowOffset:{
+            width:5,
+            height:5
+        },
+        shadowOpacity:0.5,
+        shadowRadius:5,
 
+        elevation:8
+    },
     edit_btn: {
         width: 40,
         height: 40,
